@@ -1,0 +1,15 @@
+.grids{
+    display: grid;
+    grid-template-columns: repeat(12,100px);
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+}
+.grids div{
+    border: 1px solid red;
+    width: 100px;
+    height: 1800px;
+    display: none;
+}

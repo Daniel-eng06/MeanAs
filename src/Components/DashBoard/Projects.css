@@ -1,0 +1,144 @@
+/* Projects.css */
+#loader{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.proj {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.project-page {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.project-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.project-page p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.project-page .image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.project-page .image-gallery img {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.project-page .reports-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.project-page .reports-list .report-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.project-page .reports-list .report-item h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.project-page .reports-list .report-item p {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.project-page .reports-list .report-item a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.project-page .reports-list .report-item a:hover {
+  color: #0056b3;
+}
+
+#loadi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  color: #000925;
+  flex-direction: column;
+}
+
+@media all and (max-width: 430px),
+  all and (max-width: 414px),
+  all and (max-width: 375px) {
+  .project-page {
+    margin: 0px;
+  }
+
+  #loadi {
+    font-size: 20px;
+    margin-top: 20%;
+    margin-left: 15px;
+  }
+
+  .project-page h2 {
+    font-size: 20px;
+  }
+
+  .project-page p {
+    font-size: 14px;
+  }
+
+  .project-page .image-gallery {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-page .image-gallery img {
+    max-width: 100%;
+  }
+
+  .project-page .reports-list .report-item h2 {
+    font-size: 16px;
+  }
+
+  .project-page .reports-list .report-item p {
+    font-size: 13px;
+  }
+
+  .project-page .reports-list .report-item a {
+    font-size: 14px;
+  }
+
+  #load {
+    font-size: 24px;
+    margin-top: 30%;
+  }
+}

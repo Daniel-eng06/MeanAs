@@ -1,0 +1,14 @@
+
+.background #margin{
+    margin-top:10%;
+    margin-bottom: 10%;
+    position: relative;
+}
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+    .background #margin{
+        margin-top:35%;
+        margin-bottom: 10%;
+    }
+    
+}

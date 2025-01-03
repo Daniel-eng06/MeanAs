@@ -1,0 +1,188 @@
+/* FeedbackForm.css */
+
+.feedback-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7); /* semi-transparent background */
+  backdrop-filter: blur(10px); /* blur effect */
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 400px;
+}
+
+.feedback-form {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  height: 200px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #f9f9f9;
+
+}
+
+.feedback-left,
+.feedback-right {
+  width: 48%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.feedback-left textarea,
+.feedback-right input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.feedback-left textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.feedback-right button {
+  padding: 10px;
+  background-color: #000925;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 135px;
+}
+
+.feedback-right button:hover {
+  background-color:  #ff8800;
+  border: 1px solid black;
+}
+
+.feedback-form-container p {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: green;
+}
+
+.comment {
+  margin-top: 20px;
+  margin-bottom: 40px;
+  font-size: 40px;
+  color: #000925;
+  text-align: center;
+}
+
+.comment span {
+  background-color: #ff8800;
+}
+
+.left{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -40px;
+  margin-left: 40px;
+
+}
+
+.left div{
+  width:35px;
+  height: 35px;
+}
+
+.left div img{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+#feedback{
+  height: 150px;
+  font-size: 15px;
+  padding: 20px;
+  color: black;
+  margin-left: 30px;
+}
+
+#email{
+  width:80%;
+  font-size: 15px;
+  padding:10px;
+  color: black;
+  margin-right: 30px;
+}
+.message{
+  position: relative;
+  top: -20px;
+}
+
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+  .feedback-form-container {
+      width: 100%; /* Adjust to fit smaller screens */
+      height: auto; /* Allow height to adjust based on content */
+      padding: 10px;
+  }
+
+  .feedback-form {
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+      padding: 12px;
+  }
+
+  .feedback-left, .feedback-right {
+      width: 100%;
+      margin-top: 10px;
+  }
+
+  .feedback-left textarea, .feedback-right input {
+      margin-bottom: 15px;
+  }
+
+  .feedback-right button {
+      margin-left: 12px;
+      width: 90%;
+      font-size: 15px;
+      margin-top: 2%;
+  }
+
+  .feedback-form-container p {
+      font-size: 0.9em;
+  }
+
+  .comment {
+      font-size: 30px; /* Smaller font size */
+      margin-bottom: 20px;
+  }
+
+  .left {
+      display: none;
+      margin-right: 0;
+      margin-left: 0;
+      margin-bottom: 20px; /* Add margin for spacing */
+  }
+
+  #feedback {
+      height: 100px; /* Adjusted height */
+      font-size: 14px;
+      margin-left: 0;
+      margin-bottom: 15px; 
+      padding: 10px;
+  }
+
+  #email {
+      width: 100%;
+      font-size: 14px;
+      margin-right: 0;
+  }
+}

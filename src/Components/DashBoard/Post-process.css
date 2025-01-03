@@ -1,0 +1,34 @@
+
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+    #err1 .errorcheck {
+        position: relative;
+        margin-left: -63%;
+        top: 2.5em;
+        width: calc(100% - 1em);
+        padding: 1em;
+        height: auto;
+        margin-bottom: 37em;
+        margin-top: 20%;
+    }
+
+    #err1 .response-container {
+        left: 2.0%;
+        width: calc(100% - 1em);
+        height: 25em;
+        position:absolute;
+        top:66em;
+    }
+    #err1 .report {
+        font-size: 1em;
+        margin-left: 20%;
+        width: 60%;
+        position: absolute;
+        top: 20.5em;
+    }
+
+    #err1 .checkbox-group label {
+        font-size: 15px;
+        text-align: left;
+    }
+}

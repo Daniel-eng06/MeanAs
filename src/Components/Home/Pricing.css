@@ -1,0 +1,64 @@
+#background-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.allprices {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.price {
+  padding: 40px 20px; 
+  text-align: center; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  margin: 20px auto; 
+  width: 800px; 
+  margin-top: 80px;
+  height: 250px;
+}
+
+.price h1 {
+  font-size: 40px;
+  color: #000925;
+  margin-bottom: 20px;
+}
+
+.price p {
+  font-size: 1.2em; 
+  color: black; 
+  line-height: 1.6; 
+  margin-bottom: 40px; 
+}
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+  .allprices {
+    flex-direction: column;
+    padding: 0px;
+  }
+
+  .price {
+    width: 98%;
+    padding: 20px;
+    height: auto;
+    margin-top: 100px;
+  }
+
+  .price h1 {
+    font-size: 30px;
+    margin-bottom: 15px;
+  }
+
+  .price p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+}

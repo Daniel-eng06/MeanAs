@@ -1,0 +1,223 @@
+.nav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 5;
+    top: -6px;
+    padding-bottom: -15px;
+    gap: 50px;
+    width: 1600px;
+    background: rgba(255, 255, 255, 0.3); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.logo{
+    width: 180px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+    text-decoration: none;
+    list-style: none;
+    margin-left: 90px;
+}
+
+.menu li #l1 {
+    list-style: none;
+    text-decoration:none;
+    color:#000925;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.menu li #l1:hover{
+    color: #ff8800;
+}
+
+.try li{
+    list-style: none;
+}
+
+.try #try{
+    text-decoration:none;
+    border: 1px black solid;
+    padding: 10px 18px;
+    color:#000925;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    background-color: #ff8800;
+
+}
+
+.try li #try:hover{
+    background-color: silver;
+    transition-property: background-color;
+    transition: background-color ease-in 0.5s;
+}
+
+.dropdown{
+    display: none;
+}
+
+.nav #besides{
+    display: flex;
+    position:relative;
+    margin-right:15%;
+}
+
+.nav #besides .allicons{
+    width:35px;
+    height:35px;
+}
+
+.dropdown-menuz {
+    position: absolute;
+    top: 3.65em;
+    left: -4em;
+    background: rgba(255, 255, 255, 0.3); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+
+.dropdown-itemz {
+    padding: 8px 15px;
+    text-decoration: none;
+    color: #000925;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 500;
+}
+
+.dropdown-itemz:hover {
+    color:#ff8800
+}
+
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+    .nav {
+        flex-direction: row;
+        width: auto;
+        height: 80px;
+        padding: 0px 100px;
+        column-gap: 60px;
+    }
+
+    .logo {
+        margin-top: 12px;
+        margin-left: -30px;
+        width: 150px;
+        height: 100px;
+    }
+
+    .menu,
+    .try {
+        display: none;
+    }
+
+    .dropdown{
+        display: flex;
+        flex-direction: column;
+        margin-right: -25px;
+        
+    }
+
+    .dropdown li{
+        margin-top: 15px;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        list-style: none;
+    }
+
+    .dropbar{
+        color: #000925;
+    }
+
+    .dropdown-list {
+        margin-top: 18%;
+        padding-top: 40px;
+        height: 350px;
+        position: static;
+        background: #f0f0f0;
+        box-shadow: none;
+        width: 1200px;
+        margin-left: -200px;
+    }
+
+    .dropdown-list li{
+        margin-top: 40px;
+        text-decoration: none;
+    }
+
+    .dropdown-list li #l1 , #try{
+        text-decoration: none;
+        color: #000925;
+        font-weight: 500;
+    }
+
+    .dropdown-list li #l1:hover{
+        color: #ff8800;
+    }
+
+    #try{
+        border: 1px solid black ;
+        padding: 10px 15px;
+        border-radius: 10px;
+        background-color: #ff8800;
+    }
+
+    #try:hover{
+        background-color: silver;
+        transition-property: background-color ease 0.5s;
+    }
+
+    .nav #besides{
+        display: flex;
+        position:absolute;
+        top:40%;
+        right:12%;
+    }
+    
+    .nav #besides .allicons{
+        width:40px;
+        height:40px;
+    }
+    .dropdown-menuz {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        position: absolute;
+        background-color: #f0f0f0;
+        top: 45px;
+        max-width: 50em;
+        z-index: 1000;
+    }
+
+    .dropdown-itemz {
+        font-weight: 0;
+    }
+
+}

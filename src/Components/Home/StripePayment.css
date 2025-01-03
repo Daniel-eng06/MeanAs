@@ -1,0 +1,74 @@
+.payflow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa; 
+}
+
+.payment-flow {
+    position: relative;
+    margin: 5% auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    max-width: 500px; 
+    border: 2px solid #e7982d; 
+    background-color: #ffffff; 
+    border-radius: 10px; 
+    box-shadow: 0 0 30px rgb(231, 152, 45); 
+    padding: 20px;
+    gap: 15px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.payment-flow:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+.payment-flow h2 {
+    font-size: 26px;
+    color: #343a40;
+}
+
+.payment-flow p {
+    font-size: 18px;
+    color: #495057; 
+    text-align: center;
+}
+
+.payment-flow strong{
+    font-weight: 600;
+}
+
+.payment-flow button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #e7982d; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth button transition */
+}
+
+.payment-flow button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.payment-flow button:hover {
+    background-color: silver; 
+    transform: scale(1.05); 
+}
+
+
+#loadpay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    font-size: 35px;
+}

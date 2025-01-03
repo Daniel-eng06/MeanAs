@@ -1,0 +1,86 @@
+[debug] [2024-12-22T03:09:26.651Z] ----------------------------------------------------------------------
+[debug] [2024-12-22T03:09:26.652Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\danie\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2024-12-22T03:09:26.653Z] CLI Version:   13.29.1
+[debug] [2024-12-22T03:09:26.653Z] Platform:      win32
+[debug] [2024-12-22T03:09:26.653Z] Node Version:  v22.11.0
+[debug] [2024-12-22T03:09:26.653Z] Time:          Sat Dec 21 2024 22:09:26 GMT-0500 (Eastern Standard Time)
+[debug] [2024-12-22T03:09:26.653Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-22T03:09:26.736Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-22T03:09:26.737Z] > authorizing via signed-in user (danielobeng016@gmail.com)
+[debug] [2024-12-22T03:09:26.737Z] [iam] checking project new-meanas for permissions ["firebase.projects.get"]
+[debug] [2024-12-22T03:09:26.737Z] Checked if tokens are valid: false, expires at: 1734801434487
+[debug] [2024-12-22T03:09:26.737Z] Checked if tokens are valid: false, expires at: 1734801434487
+[debug] [2024-12-22T03:09:26.738Z] > refreshing access token with scopes: []
+[debug] [2024-12-22T03:09:26.739Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-12-22T03:09:26.739Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-12-22T03:09:26.811Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-12-22T03:09:26.812Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-12-22T03:09:26.822Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas:testIamPermissions [none]
+[debug] [2024-12-22T03:09:26.822Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas:testIamPermissions x-goog-quota-user=projects/new-meanas
+[debug] [2024-12-22T03:09:26.822Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-12-22T03:09:26.922Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas:testIamPermissions 200
+[debug] [2024-12-22T03:09:26.922Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-12-22T03:09:26.923Z] Checked if tokens are valid: true, expires at: 1734840565812
+[debug] [2024-12-22T03:09:26.923Z] Checked if tokens are valid: true, expires at: 1734840565812
+[debug] [2024-12-22T03:09:26.923Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas [none]
+[debug] [2024-12-22T03:09:27.018Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas 200
+[debug] [2024-12-22T03:09:27.018Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/new-meanas {"projectNumber":"578710519258","projectId":"new-meanas","lifecycleState":"ACTIVE","name":"New MeanAs","labels":{"firebase":"enabled"},"createTime":"2024-10-18T03:45:42.494938Z"}
+[info] 
+[info] === Serving from 'C:\Users\danie\OneDrive\Desktop\meanasnew'...
+[info] 
+[debug] [2024-12-22T03:09:27.025Z] defaultcredentials: writing to file C:\Users\danie\AppData\Roaming\firebase\danielobeng016_gmail_com_application_default_credentials.json
+[debug] [2024-12-22T03:09:27.027Z] Setting GAC to C:\Users\danie\AppData\Roaming\firebase\danielobeng016_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\danie\\AppData\\Roaming\\firebase\\danielobeng016_gmail_com_application_default_credentials.json"}}
+[debug] [2024-12-22T03:09:27.028Z] Checked if tokens are valid: true, expires at: 1734840565812
+[debug] [2024-12-22T03:09:27.028Z] Checked if tokens are valid: true, expires at: 1734840565812
+[debug] [2024-12-22T03:09:27.028Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/new-meanas/adminSdkConfig [none]
+[debug] [2024-12-22T03:09:27.444Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/new-meanas/adminSdkConfig 200
+[debug] [2024-12-22T03:09:27.445Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/new-meanas/adminSdkConfig {"projectId":"new-meanas","databaseURL":"https://new-meanas-default-rtdb.firebaseio.com","storageBucket":"new-meanas.appspot.com","locationId":"us-central"}
+[info] i  functions: Watching "C:\Users\danie\OneDrive\Desktop\meanasnew\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\danie\\OneDrive\\Desktop\\meanasnew\\functions\" for Cloud Functions..."}}
+[debug] [2024-12-22T03:09:27.464Z] Validating nodejs source
+[debug] [2024-12-22T03:09:28.271Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-12-22T03:09:28.271Z] Building nodejs source
+[debug] [2024-12-22T03:09:28.272Z] Failed to find version of module node: reached end of search path C:\Users\danie\OneDrive\Desktop\meanasnew\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[debug] [2024-12-22T03:09:28.273Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-12-22T03:09:28.278Z] Found firebase-functions binary at 'C:\Users\danie\OneDrive\Desktop\meanasnew\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8078
+
+[debug] [2024-12-22T03:09:28.796Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
+[debug] [2024-12-22T03:34:51.741Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:34:54.753Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:34:59.735Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:35:08.741Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:35:25.756Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:35:58.780Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:37:03.774Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:39:12.777Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:47:03.222Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T03:55:35.781Z] Functions emulator received unknown request at path /ws
+[debug] [2024-12-22T04:12:23.859Z] Functions emulator received unknown request at path /Gradient%202.mp4

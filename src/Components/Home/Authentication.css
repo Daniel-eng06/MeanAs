@@ -1,0 +1,125 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.8);
+  border: 2px solid silver;
+  width: 320px;
+  height: auto;
+  margin-top: 40px;
+  border-radius: 20px;
+}
+
+.meanaslogo {
+  width: 230px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.meanaslogo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+#or {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #000925;
+  font-weight: 550;
+  margin-top: -15px;
+  display: flex;
+  align-items: center;
+}
+
+#sign,
+.google-signin {
+  padding: 10px;
+  margin-bottom: 15px;
+  color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  background-color: #000925;
+  width: 260px; /* Ensure buttons are the same width */
+}
+
+#sign:hover {
+  background-color: #ff8800;
+}
+
+/* New style for Google Sign-In button */
+.google-signin {
+  background-color: #ff8800; /* Google brand color */
+  border: 1px solid #000925;
+  font-weight: 550;
+}
+
+.google-signin:hover {
+  background-color: silver;
+  color: #000925;
+  font-weight: 550;
+}
+
+#background-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* Add this to Authentication.css */
+
+.welcome-message {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.welcome-message h2 {
+  font-size: 24px;
+  color: #000925;
+  font-weight: 600;
+  margin-bottom:20px;
+}
+
+.welcome-message p {
+  font-size: 16px;
+  color:black;
+  margin-bottom: 10px;
+}
+
+
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+  .auth {
+    width: 90%;
+    height: auto;
+    padding: 15px;
+    margin-top: 100px;
+  }
+
+  .meanaslogo {
+    width: 180px;
+    height: 60px;
+  }
+
+  #sign,
+  .google-signin {
+    width: 70%;
+    font-size: 16px;
+  }
+
+  #or {
+    font-size: 16px;
+  }
+}

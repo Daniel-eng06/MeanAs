@@ -1,0 +1,17 @@
+.help{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#helps{
+    margin-top:9%;
+}
+
+
+@media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+    #helps{
+        margin-top:30%;  
+    }
+}
