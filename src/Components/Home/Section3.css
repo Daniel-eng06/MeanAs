@@ -7,8 +7,8 @@
     margin-top: 100px;
 }
 
-.section3 .tutorial{
-    width:50%;
+.section3 .tutorial {
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -19,12 +19,12 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
-.section3 .tutorial video{
+.section3 .tutorial video {
     max-width: 100%;
     height: 500px;
     object-fit: contain;
-   
 }
+
 
 .section3 h1{
     font-size: 40px;
@@ -128,8 +128,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-     background: rgba(255, 255, 255, 0.8); /* semi-transparent background */
-    backdrop-filter: blur(10px); /* blur effect */
+     background: rgba(255, 255, 255, 0.8); 
+    backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px);
 }
 
@@ -142,7 +142,7 @@
     flex-direction: column;
     padding: 60px 30px 40px;
     gap: 20px;
-    background: rgba(255, 255, 255, 0.7); /* semi-transparent background */
+    background: rgba(255, 255, 255, 0.7); 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     height: 150px;
@@ -178,6 +178,18 @@
     object-fit: cover;
 }
 
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+    .section3 .tutorial {
+        width: 60%;
+    }
+
+    .steps, .steps1 {
+        width: 95%;
+    }
+
+}
+
+
 
 @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
     .section3 h1 {
@@ -185,19 +197,44 @@
         text-align: center;
     }
 
+    .section3 .tutorial {
+        width: 270px;
+        height: 200px;
+        margin-bottom: -10px;
+        margin-top: -10px;
+    }
+
+    .section3 .tutorial video {
+        max-width: 16.7em;
+        height: 350px;
+        object-fit: cover;
+        /* margin-left: -8%; */
+    }
+
+    
     .steps, .steps1 {
         flex-direction: column;
-        width: 100%;
+        width: 270px;
         height: auto;
         border: 1px solid silver;
         margin-bottom: 20px;
     }
 
-    .steps div, .steps1 div, .steps #process, .steps1 #process {
-        width: 90%;
+    .steps div, .steps1 div,
+    .steps #process, .steps1 #process {
+        width: 270px;
         height: auto;
         padding: 20px;
         margin: 10px 0;
+    }
+
+    #process h2 {
+        font-size: 24px;
+    }
+
+    #process span,
+    #process ul {
+        font-size: 1em;
     }
 
     .testimony {
@@ -210,14 +247,8 @@
         height: auto;
     }
 
-    #testa {
+    #testa, #testam {
         font-size: 14px;
-        width: 95%;
-    }
-
-    #testam {
-        font-size: 14px;
-        font-weight: 500;
     }
 
     .testimony div {

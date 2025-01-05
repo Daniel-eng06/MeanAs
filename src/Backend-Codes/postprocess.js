@@ -53,7 +53,7 @@ async function callGPTAPI(imageUrls, promptText) {
       frequency_penalty: 0,
       presence_penalty: 0,
       top_p: 1,
-      max_tokens: 2500,
+      max_tokens: 3000,
     }, {
       headers: {
         'Content-Type': 'application/json',
