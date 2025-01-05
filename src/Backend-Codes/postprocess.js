@@ -125,36 +125,36 @@ router.post('/', upload.array('images'), async (req, res) => {
     }
 
     const requirement = ` 
-            1. FEA Results Interpretation:
+            1. ##FEA Results Interpretation:
               - Analyze either the stress, strain and deformation distributions obtained from the FEA analysis in the provided visualized result images in a sentence.
               - Identify key areas that one must look out for in one sentence, such as regions with high stress concentrations or significant deformation.
               - Compare the analyzed yield strength values from the FEA results with the standard yield strength of the ${description} used.
               - Provide a detailed interpretation of these results, explaining how they align with the objectives of the FEA study.
             
-            2. Material Performance Evaluation:
+            2. ##Material Performance Evaluation:
               - Check the image and spot out the performance of the selected material under the simulated FEA conditions.
               - Now Compare the standard yield strength values of the ${description} with the analyzed final stress, deformation value or strain value from the visualized FEA results image.
               - Assess whether the materials meet the expected performance criteria based on the FEA results, and suggest any necessary material changes and future steps to take to succeed.
             
-            3. FEA Results Comparison and Validation:
+            3. ##FEA Results Comparison and Validation:
               - Search into your trained data and knowledge you have concerning FEA results and judge if this model is good for manufacturing or to perform it's purpose.
               - Inform me on any discrepancies between the FEA results and these other data sources, providing potential reasons for any differences.
               - if the results isn't good then recommend what must be done right and any additional simulations or model adjustments that could improve the accuracy of the FEA results."
           `   
           
     const Cfd_request = ` 
-      1. CFD Results Interpretation:
+      1. ##CFD Results Interpretation:
         - Analyze the fluid flow patterns and other relevant results obtained from the CFD analysis in the provided visualized images.
         - Identify key areas of interest, such as regions with high turbulence, pressure drops, or flow separations.
         - Compare the analyzed results with any theoretical or experimental data if available.
         - Provide a detailed interpretation of these results, explaining how they align with the objectives of the CFD study.
 
-      2. Material and Boundary Condition Evaluation:
+      2. ##Material and Boundary Condition Evaluation:
         - Check the image and spot out the performance of the materials and boundary conditions used in the CFD analysis.
         - Assess how the boundary conditions affect the fluid flow and heat transfer results.
         - Suggest any necessary changes to the boundary conditions or materials based on the CFD results.
       
-      3. CFD Results Comparison and Validation:
+      3. ##CFD Results Comparison and Validation:
         - Search into your trained data and knowledge you have concerning CFD results and judge if this model is good for manufacturing or to perform it's purpose.
         - Inform me on any discrepancies and provide potential reasons for differences.
         - Recommend any additional simulations or model adjustments that could improve the accuracy of the CFD results.`      
@@ -163,11 +163,10 @@ router.post('/', upload.array('images'), async (req, res) => {
     let promptText;
     if (analysisType === 'FEA') {
       promptText = `
-      Role: As a CAE expert, Senior Engineer in all engineering fields, and physicist with extensive knowledge in Finite Element Analysis (FEA), your task involves post-processing the FEA results of the provided model.
+      Task: In three solid reasoning, provide a grade 5 understanding and interpretation to the results in the image and *Bolden* the key factors.
+      I trust you will deliver the best solutions.
       
-      Task: In three solid reasoning provide a grade 5 understanding to the results in the image.
-      
-     Title: ${detailLevel} Level Explanation:
+     Title: #${detailLevel} Level Explanation:
          - Create a clear and concise report compiling the final FEA report using this detail level: ${detailLevel}.
          if(${detailLevel} === 'High Student Level'){
             Provide the explanation and final report according to the specified detail level:
@@ -195,11 +194,10 @@ router.post('/', upload.array('images'), async (req, res) => {
 
     } else if (analysisType === 'CFD') {
       promptText = `
-      Role: As a CAE expert, Senior Engineer in all engineering fields, and physicist with extensive knowledge in Computational Fluid Dynamics (CFD), your task involves post-processing the CFD results of the provided model.
+          Task: In three solid reasoning, provide a grade 5 understanding and interpretation to the results in the image and *Bolden* the key factors.
+           I trust you will deliver the best solutions.
 
-      Task: With this as my ${description}  Bolden the key factors:
-
-      Title: ${detailLevel} Level Explanation:
+      Title: #${detailLevel} Level Explanation:
          - Create a clear and concise report compiling the final FEA report using this detail level: ${detailLevel}.
          if(${detailLevel} === 'High Student Level'){
             Provide the explanation and final report according to the specified detail level:

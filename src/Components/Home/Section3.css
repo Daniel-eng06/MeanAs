@@ -178,7 +178,7 @@
     object-fit: cover;
 }
 
-@media screen and (min-width: 1025px) and (max-width: 1440px) {
+/* @media screen and (min-width: 1025px) and (max-width: 1440px) {
     .section3 .tutorial {
         width: 60%;
     }
@@ -187,8 +187,7 @@
         width: 95%;
     }
 
-}
-
+} */
 
 
 @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {

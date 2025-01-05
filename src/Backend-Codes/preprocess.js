@@ -124,22 +124,25 @@ router.post('/', upload.array('images'), async (req, res) => {
     let promptText;
     if (analysisType === 'FEA') {
       promptText = `
-        Task: With this goal: ${description} Bolden the key factors and a professional format. No BS just meaning facts. 
+        Task: With this goal: ${description} *Bolden* the key factors and a professional format. No BS just meaningful facts. 
         
-        Start with a Catchy Heading and your output should be in a way that both a non-engineering & engineering student,
-        business man, company or any other firm could understand and follow till a clear successful solution. 
+        Objective: The output should be in a way that both a non-engineering & engineering student,
+        business man, company or any other firm could understand and follow till a clear successful analysis solution.
+        I trust you will deliver the best solutions. 
 
-        1. Model Analysis and Geometry Cleanup: 
+        #Start with a Catchy Heading based on the request. 
+        
+        1. ##Model Analysis and Geometry Cleanup: 
           - Analyze the model in the provided images, tell me just the main spots to focus on for geometry cleanup.
           - Check for errors, inconsistencies, and topological issues in the image model provided and state it clearly and concise.
 
-        2. Analysis Type Recommendation:
+        2. ##Analysis Type Recommendation:
           - Recommend the specific analysis type to use to perform that aligns with the goal in my description that is define the physical behaviours that relates to the model in the image.
 
-        3. Material Selection:
+        3. ##Material Selection:
           - Suggest 3 materials from ${materials} that best suit my goal and select the materials from MatWeb, including full numerical properties for use specifically for my analysis.
            <example>:
-            - Stainless Steel
+            - *Stainless Steel*
               - Density: 7.85 g/cm³
               - Tensile Strength: 515-720 MPa
               - Young's Modulus: 193 GPa
@@ -148,15 +151,15 @@ router.post('/', upload.array('images'), async (req, res) => {
               - Melting Point: 1400-1450°C
             </example>
 
-        4. Mesh Quality and Critical Locations:
+        4. ##Mesh Quality and Critical Locations:
           - Identify critical locations on the model in the provided image that require high-quality meshing and how to mesh it.
           - Provide mesh quality criteria for these areas. 
           <examples>:
-            - "At the top corner of the model where there is a hole, increase the mesh quality by using an element size of 0.1 at the edges."
+            - "At the top corner of the model where there is a hole, increase the mesh quality by using an *element size of 0.1* at the edges."
           </examples>
           Also check if the model in the image is an assemblied model and provide instructions on how contact must be applied on the models before meshing if not proceed with meshing.
 
-        5. Boundary Conditions and Numerical Parameters:
+        5. ##Boundary Conditions and Numerical Parameters:
           - Considering the original mass of the model as ${mass} use this to predict the boundary condition for the real model with one of the materials check for a values that can be applied based on the mass.
           state the material used and why and how you chose those boundary conditions which will let me follow and analysis the model accurately No BS.
           to the default mass ${mass} of the model in the image.
@@ -171,7 +174,7 @@ router.post('/', upload.array('images'), async (req, res) => {
           <example>
           - Also provide any necessary thing that could lead the successfully analysis with a kind of boundary condition considering the model image.
 
-        6. Roadmap and Analysis Recommendations:
+        6. ##Roadmap and Analysis Recommendations:
           - Using all the provided data, give me a clear and concise roadmap that is which options do i click that results in the next and next for conducting the analysis in ${option} ${customOption} each analysis type you recommended.
           Do not get confused with the two different examples they are all meant for different softwares. Just use it as a sample but think and find the right processes for the selected analysis software. 
           <example 1 for Ansys Workbench>
@@ -323,21 +326,24 @@ router.post('/', upload.array('images'), async (req, res) => {
                 Use toolbar for different result types
           
           </example>
-          - Conclude on stating this to the user to proceed with understanding the post-processing process from MeanAs Dashboard.
+          - Conclude on stating this to the user to proceed with understanding the post-processing process from *MeanAs Dashboard*.
         `;
        
     } else if (analysisType === 'CFD') {
       promptText = `
         Task: With this goal: ${description} Bolden the key factors and a professional format. No BS just meaning facts. 
         
-        Start with a Catchy Heading and your output should be in a way that both a non-engineering & engineering student,
-        business man, company or any other firm could understand and follow till a clear successful solution. 
+        Objective: The output should be in a way that both a non-engineering & engineering student,
+        business man, company or any other firm could understand and follow till a clear successful analysis solution.
+        I trust you will deliver the best solutions. 
 
-        1. Model Analysis and Geometry Cleanup: 
+        #Start with a Catchy Heading based on the request. 
+
+        1. ##Model Analysis and Geometry Cleanup: 
           - Analyze the model in the provided images, tell me just the main spots to focus on for geometry cleanup.
           - Check for errors, inconsistencies, and topological issues in the image model provided and state it clearly and concise.
     
-        2. Flow Domain and Boundary Condition Setup:
+        2. ##Flow Domain and Boundary Condition Setup:
           - Tell me the appropriate flow domain setup, including inlet, outlet, and wall boundary conditions and where on the model should that be applied.
           - Specify and elaborate any special boundary conditions that align with my ${description}.
           <example>
@@ -352,7 +358,7 @@ router.post('/', upload.array('images'), async (req, res) => {
               Turbulence Intensity: 5% 
           </example>
     
-        3. Mesh Quality and Refinement:
+        3. ##Mesh Quality and Refinement:
           - Check and identify critical regions in the model where flow gradients are expected to be high (e.g., near walls, around obstacles, or at interfaces) and state it.
           - Recommend mesh refinement strategies for these regions of the model in the image provided, including boundary layer meshing and local grid refinement. 
           This example is just a sample reason and come up with the accurate one in relation to the model you see.
@@ -360,7 +366,7 @@ router.post('/', upload.array('images'), async (req, res) => {
             - "Refine the mesh near the leading edge of the airfoil with a minimum element size of 0.05 mm to capture the boundary layer effects accurately."
           </example>
 
-        4. Fluid Properties and Material Selection:
+        4. ##Fluid Properties and Material Selection:
           - Suggest 3 materials from ${materials} that best suit my goal and select the materials from MatWeb, including full numerical properties for use specifically for my analysis.
            <example>:
             - Stainless Steel
@@ -373,12 +379,12 @@ router.post('/', upload.array('images'), async (req, res) => {
             </example>
           if the material ${materials} is a liquid also follow the structure above to show the numerical properties.
     
-        5. Solver Settings and Numerical Parameters:
+        5. ##Solver Settings and Numerical Parameters:
           - Reason and choose the appropriate solver settings accurate for the type of flow (laminar, turbulent, compressible, incompressible) and the specific objectives of the analysis in relation to the goal.
           - Suggest turbulence models, time-stepping methods, or other solver parameters crucial for accurate and realistic results.
           That is providing the numerical value to use for the solving like the time-stepping and any important parameters.
     
-        6. Roadmap and Analysis Recommendations:
+        6. ##Roadmap and Analysis Recommendations:
             -Using all the provided data, give me a clear and concise roadmap that is which options do i click that results in the next and next for conducting the analysis in ${option} ${customOption} each analysis type you recommended.
             Do not get confused with the two different examples they are all meant for different softwares. Just use it as a sample but think and find the right processes for the selected analysis software. 
             <example 1 for Ansys Workbench>
@@ -486,7 +492,7 @@ router.post('/', upload.array('images'), async (req, res) => {
               →Save Project
               Click "File" > "Save As" to save your project with a descriptive name.
           </example>
-          - Conclude on they proceeding with understanding the post-processing process from MeanAs.
+          - Conclude on stating this to the user to proceed with understanding the post-processing process from *MeanAs Dashboard*.
       `;
     } else {
       promptText = `
