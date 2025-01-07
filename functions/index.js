@@ -2,6 +2,7 @@ const functions = require("firebase-functions/v1");
 const admin = require("firebase-admin");
 const moment = require("moment");
 admin.initializeApp();
+const db = admin.firestore();
 
 exports.createSubscriptionPlan = functions.firestore
     .document("/tmpSubscriptions/{documentId}")
@@ -22,8 +23,6 @@ exports.createSubscriptionPlan = functions.firestore
               original,
           );
 
-      const db = admin.firestore();
-
       const planDocument = await db.collection("Plans")
           .where("name", "==", planMap[original.plan])
           .limit(1)
@@ -35,8 +34,9 @@ exports.createSubscriptionPlan = functions.firestore
       }
 
       const plan = planDocument.docs[0];
+      const planData = plan.data();
 
-      if (plan.price === 0) {
+      if (planData.price === 0) {
         const userFreePlans = await db.collection("userSubscriptions")
             .where("user.uid", original.userId)
             .get();
@@ -49,15 +49,15 @@ exports.createSubscriptionPlan = functions.firestore
 
       const user = admin.auth().getUser(original.userId);
       const startDate = moment();
-      const endDate = moment().add(plan.time, "days");
+      const endDate = moment().add(planData.time, "days");
 
       const data = {
-        plan,
+        planData,
         user,
         startDate,
         endDate,
-        occurrence: plan.occurrence,
-        occurrenceType: plan.occurentType,
+        occurrence: planData.occurrence,
+        occurrenceType: planData.occurrenceType,
       };
 
       functions.logger
@@ -70,4 +70,47 @@ exports.createSubscriptionPlan = functions.firestore
 
 exports.handleStripWebhook = functions.https.onRequest(async (req, res) => {
   const body = req.body;
+
+  if (body["type"] === "checkout.session.completed") {
+    const transactionId = body["data"]["object"]["metadata"]["transactionId"];
+    const userId = body["data"]["object"]["metadata"]["userId"];
+    const paymentStatus = body["data"]["object"]["payment_status"]
+
+    if (paymentStatus !== "paid") {
+      return res.status(200);
+    }
+    const paymentDocs = await db.collection(`payments/${userId}/subcollection`)
+        .where("transactionId", "==", transactionId)
+        .where("status", "==", "PENDING")
+        .limit(1)
+        .get();
+
+    if (paymentDocs.empty) {
+      return res.status(200);
+    }
+
+    const payment = paymentDocs.docs[0];
+    const paymentData = payment.data();
+
+    //update status of payment
+    await db.collection(`payments/${userId}/subcollection`)
+      .doc(payment.id)
+      .update({
+      status: "SUCCESS"
+    });
+
+    const planMap = {
+      "Explorer Plan": "free",
+      "Standard Plan": "standard",
+      "Unlimited Plan": "unlimited",
+    };
+
+    //save to tmpSubscriptions for functions to kick in
+    await db.collection("tmpSubscriptions").add({
+        plan: planMap[paymentData.plan.name],
+        userId: payment.userId,
+    })
+  }
+
+  return res.status(200);
 });
