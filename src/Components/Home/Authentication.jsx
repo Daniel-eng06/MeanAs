@@ -40,7 +40,7 @@ const Authentication = () => {
 
       const planType = queryParams.get("q");
 
-      if (!planType || planType === 'free') {
+      if (planType === 'free') {
         console.log('running')
         await addDoc(collection(db, "tmpSubscriptions"), {
           plan: 'free',
@@ -49,7 +49,7 @@ const Authentication = () => {
 
         navigate("/dashboard", { state: { plan } });
       } else {
-        navigate("/paymentflow", { state: { plan } });
+        navigate(`/paymentflow/${planType}`, { state: { plan } });
       }
   
     } catch (error) {

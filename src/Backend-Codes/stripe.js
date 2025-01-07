@@ -43,14 +43,15 @@ router.post('/create-checkout-session', verifyToken, async (req, res) => {
   const payload = qs.stringify({
     'line_items[0][price]': plan.priceId,
     'line_items[0][quantity]': '1',
-    'after_completion[type]': 'redirect',
-    'after_completion[redirect][url]': 'https://google.com',
-    'metadata[transactionId]': transactionId,
+    'cancel_url': process.env.REACT_PAYMENT_CANCEL,
+    'success_url': `${process.env.REACT_PAYMENT_REDIRECT}?transaction_id=${transactionId}&user_id=${user.uid}`,
+    'client_reference_id': transactionId,
     'metadata[userId]': user.uid,
+    'mode': 'payment'
   });
 
   try {
-    const response = await axios.post('https://api.stripe.com/v1/payment_links', payload,
+    const response = await axios.post('https://api.stripe.com/v1/checkout/sessions', payload,
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -65,7 +66,7 @@ router.post('/create-checkout-session', verifyToken, async (req, res) => {
     const {id, url} = response.data;
 
     const data = {
-      paymentId: id,
+      sessionId: id,
       paymentUrl: url,
       userId: user.uid,
       createdAt: new Date(),
@@ -88,17 +89,18 @@ router.post('/create-checkout-session', verifyToken, async (req, res) => {
 
 router.post('/webhook', async (req, res) => {
   const body = req.body;
-  if (body['type'] === 'checkout.session.completed') {
-    const transactionId = body['data']['object']['metadata']['transactionId'];
-    const userId = body['data']['object']['metadata']['userId'];
-    const paymentStatus = body['data']['object']['payment_status']
+  if (body["type"] === "checkout.session.completed") {
+    const transactionId = body["data"]["object"]["client_reference_id"];
+    const userId = body["data"]["object"]["metadata"]["userId"];
+    const paymentStatus = body["data"]["object"]["payment_status"];
 
-    if (paymentStatus !== 'paid') {
+    if (paymentStatus !== "paid") {
       return res.status(200);
     }
-    const paymentDocs = await firestore.collection(`payments/${userId}/subcollection`)
-        .where('transactionId', '==', transactionId)
-        .where('status', '==', 'PENDING')
+    const paymentDocs = await firestore
+        .collection(`payments/${userId}/subcollection`)
+        .where("transactionId", "==", transactionId)
+        .where("status", "==", "PENDING")
         .limit(1)
         .get();
 
@@ -109,27 +111,73 @@ router.post('/webhook', async (req, res) => {
     const payment = paymentDocs.docs[0];
     const paymentData = payment.data();
 
-    //update status of payment
-    await firestore.collection(`payments/${userId}/subcollection`)
-      .doc(payment.id)
-      .update({
-      status: 'SUCCESS'
-    });
+    // update status of payment
+    await firestore
+        .collection(`payments/${userId}/subcollection`)
+        .doc(payment.id)
+        .update({
+          status: "SUCCESS",
+        });
 
     const planMap = {
-      "Explorer Plan": 'free',
-      "Standard Plan": 'standard',
-      "Unlimited Plan": 'unlimited',
+      "Explorer Plan": "free",
+      "Standard Plan": "standard",
+      "Unlimited Plan": "unlimited",
     };
 
-    //save to tmpSubscriptions for functions to kick in
-    await firestore.collection('tmpSubscriptions').add({
-        plan: planMap[paymentData.plan.name],
-        userId: payment.userId,
-    })
+    console.log(planMap[paymentData.plan.name]);
+
+    // save to tmpSubscriptions for functions to kick in
+    await firestore.collection("tmpSubscriptions").add({
+      plan: planMap[paymentData.plan.name],
+      userId: paymentData.userId,
+    });
   }
 
   return res.status(200);
 });
+
+router.get('/transaction', async (req, res) => {
+  const transactionId = req.query.transaction_id;
+  const userId = req.query.user_id;
+
+  const paymentDocs = await firestore
+  .collection(`payments/${userId}/subcollection`)
+  .where("transactionId", "==", transactionId)
+  .limit(1)
+  .get();
+
+  if (paymentDocs.empty) {  
+    return res.status(404).json({message: 'transaction not found'});
+  }
+
+  const payment = paymentDocs.docs[0];
+  const paymentData = payment.data();
+  const transactionStatus = await verifyTransaction(paymentData.sessionId);
+  if (transactionStatus === 'error') {
+    return res.status(500).json({message: 'error verifying transaction'});
+  }
+  return res.status(200).json({payment_status: transactionStatus});
+
+})
+
+const verifyTransaction = async (sessionId) => {
+  try {
+    const response = await axios.get(`https://api.stripe.com/v1/checkout/sessions/${sessionId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`
+        }
+      }
+    );
+    if (response.status !== 200) {
+      return 'error';
+    }
+    const {payment_status} = response.data;
+    return payment_status; 
+  } catch(e) {
+    return 'error'
+  }
+}
 
 module.exports = router;

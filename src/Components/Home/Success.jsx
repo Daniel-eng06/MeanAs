@@ -1,57 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
+import axios from 'axios';
 
 const Success = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState('loading');
-  const sessionId = searchParams.get('session_id');
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const transactionId = searchParams.get('transaction_id');
+  const userId = searchParams.get('user_id');
 
   useEffect(() => {
-    if (!sessionId) {
+    if (!transactionId) {
       navigate('/pricing');
       return;
     }
 
     const verifySubscription = async () => {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       try {
-        const user = auth.currentUser;
-        if (!user) {
-          navigate('/authentication');
-          return;
-        }
-
-        const idToken = await user.getIdToken();
-        const response = await fetch('/api/stripe/subscription-status', {
+        
+        const response = await axios({
+          method: 'GET',
+          url: `${apiUrl}/stripe/transaction?transaction_id=${transactionId}&user_id=${userId}`,
           headers: {
-            'Authorization': `Bearer ${idToken}`
-          }
+            'Content-Type': 'application/json',
+          },
+          timeout: 300000,
         });
-        
-        const data = await response.json();
-        
-        if (data.status === 'active') {
-          setStatus('success');
-          localStorage.setItem('subscriptionStatus', 'active');
-        } else {
+
+        const responseData = response.data;
+
+        if (response.status !== 200) {
           setStatus('error');
+        } else {
+          setStatus(responseData.payment_status === 'paid' ? 'success' : 'error');
         }
       } catch (error) {
         console.error('Error verifying subscription:', error);
-        setStatus('error');
+        setStatus('Error verifying transaction');
       }
     };
 
     verifySubscription();
-  }, [sessionId, navigate]);
+  }, [transactionId, userId, navigate]);
 
   return (
     <div className="success-page">
-      {status === 'loading' && (
-        <div className="loading-state">
-          <h2>Processing your subscription...</h2>
-        </div>
+      {loading && (
+        <div id='loadpay'>Loading...</div>
       )}
       
       {status === 'success' && (
@@ -61,9 +59,6 @@ const Success = () => {
           <div className="action-buttons">
             <button onClick={() => navigate('/dashboard')}>
               Go to Dashboard
-            </button>
-            <button onClick={() => navigate('/profile')}>
-              View Subscription Details
             </button>
           </div>
         </div>

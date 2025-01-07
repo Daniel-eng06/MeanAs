@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../../firebase';
-import Footer from '../Home/Footer';
-import Navbar from '../Home/Navbar';
 import './StripePayment.css';
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -20,7 +18,8 @@ const PaymentFlow = () => {
         const querySnapshot = await getDoc(doc(db, "Plans", id));
         setLoading(false);
         if (querySnapshot.exists()) {
-          setPlan(querySnapshot.data());
+          const temp = {...querySnapshot.data(), id: querySnapshot.id};
+          setPlan(temp);
         } else {
           navigate("/pricing");
         }
@@ -36,8 +35,9 @@ const PaymentFlow = () => {
 
   const handleSubscribe = async () => {
     const user = auth.currentUser;
+    console.log(plan);
     if (!user) {
-      navigate('/authentication');
+      navigate(`/authentication${plan.price === 0 ? '?q=free' : `?q=${plan.id}`}`);
       return;
     }
 
