@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase';
 import axios from 'axios';
+import "./success.css"
 
 const Success = () => {
   const [searchParams] = useSearchParams();
@@ -54,8 +54,8 @@ const Success = () => {
       
       {status === 'success' && (
         <div className="success-state">
-          <h1>Thank you for subscribing!</h1>
-          <p>Your subscription is now active.</p>
+          <h1>Thank you for subscribing to MeanAs! </h1>
+          <p>Your subscription is now active. Enjoy our services.</p>
           <div className="action-buttons">
             <button onClick={() => navigate('/dashboard')}>
               Go to Dashboard

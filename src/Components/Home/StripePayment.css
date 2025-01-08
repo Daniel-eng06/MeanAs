@@ -15,7 +15,7 @@
     align-items: center;
     width: 60%;
     max-width: 500px; 
-    border: 2px solid #e7982d; 
+    border: 5px solid #e7982d; 
     background-color: #ffffff; 
     border-radius: 10px; 
     box-shadow: 0 0 30px rgb(231, 152, 45); 
@@ -26,6 +26,7 @@
 
 .payment-flow:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+    border: 2px solid #e7982d; 
 }
 
 .payment-flow h2 {

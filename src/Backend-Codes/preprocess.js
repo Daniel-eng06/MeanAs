@@ -47,7 +47,7 @@ async function callGPTAPI(imageUrls, promptText) {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: "gpt-4o-2024-05-13",  
       messages: messages,
-      temperature: 0.3,
+      temperature: 0.25,
       frequency_penalty: 0,
       presence_penalty: 0,
       top_p: 1,
@@ -124,7 +124,7 @@ router.post('/', upload.array('images'), async (req, res) => {
     let promptText;
     if (analysisType === 'FEA') {
       promptText = `
-        Task: With this goal: ${description} *Bolden* the key factors and a professional format. No BS just meaningful facts. 
+        Task: Please help me accurately with this goal and avoid hallucination: ${description} *Bolden* the key factors and a professional format. No BS just meaningful facts. 
         
         Objective: The output should be in a way that both a non-engineering & engineering student,
         business man, company or any other firm could understand and follow till a clear successful analysis solution.
@@ -133,6 +133,8 @@ router.post('/', upload.array('images'), async (req, res) => {
         #Start with a Catchy Heading based on the request. 
         
         1. ##Model Analysis and Geometry Cleanup: 
+          Before doing the task below I want you to be precise on the location of the model in the image that required a clean up. example at the left side of the model 
+          and then you add what spot you found that must be checked.
           - Analyze the model in the provided images, tell me just the main spots to focus on for geometry cleanup.
           - Check for errors, inconsistencies, and topological issues in the image model provided and state it clearly and concise.
 
@@ -152,15 +154,16 @@ router.post('/', upload.array('images'), async (req, res) => {
             </example>
 
         4. ##Mesh Quality and Critical Locations:
-          - Identify critical locations on the model in the provided image that require high-quality meshing and how to mesh it.
-          - Provide mesh quality criteria for these areas. 
+          - Help me to identify critical locations on the model in the provided image that require high-quality meshing and how to mesh it and mentor me on why meshing that area is important to me 
+          achieving accurate analysis result.
+          - Help me provide mesh quality criteria for the critical areas you will suggest and what element sizing or other meshing technics and values you will follow to mesh the model accurately. 
           <examples>:
             - "At the top corner of the model where there is a hole, increase the mesh quality by using an *element size of 0.1* at the edges."
           </examples>
           Also check if the model in the image is an assemblied model and provide instructions on how contact must be applied on the models before meshing if not proceed with meshing.
 
         5. ##Boundary Conditions and Numerical Parameters:
-          - Considering the original mass of the model as ${mass} use this to predict the boundary condition for the real model with one of the materials check for a values that can be applied based on the mass.
+          - Help me get close to realistic boundary condition parameters considering the original mass of the model as ${mass} use this to predict the boundary condition for the real model with one of the materials check for a values that can be applied based on the mass.
           state the material used and why and how you chose those boundary conditions which will let me follow and analysis the model accurately No BS.
           to the default mass ${mass} of the model in the image.
           Take note: I want you to derive the force, pressure and other conditions in words format and do not tell me to calculate it.
@@ -175,8 +178,9 @@ router.post('/', upload.array('images'), async (req, res) => {
           - Also provide any necessary thing that could lead the successfully analysis with a kind of boundary condition considering the model image.
 
         6. ##Roadmap and Analysis Recommendations:
-          - Using all the provided data, give me a clear and concise roadmap that is which options do i click that results in the next and next for conducting the analysis in ${option} ${customOption} each analysis type you recommended.
-          Do not get confused with the two different examples they are all meant for different softwares. Just use it as a sample but think and find the right processes for the selected analysis software. 
+          - Help me using all the provided data, give me a clear and concise roadmap, such as which options do i click to result in the next and next step for conducting the analysis in ${option} ${customOption} with each analysis type you recommended.
+          so if you suggested static analysis you provide how to do the analysis on that using the ${option} ${customOption} and likewise to other analysis type.
+          Please help yourself from any confusion with the two different examples they are all meant for different softwares. Just use it as a sample for the those softwares, but I want you to think and precisely find the right processes for ${option} ${customOption}  based on the softwares documentation. 
           <example 1 for Ansys Workbench>
             Just use this as a blueprint and follow the exact format. 
               →Workbench
@@ -326,6 +330,18 @@ router.post('/', upload.array('images'), async (req, res) => {
                 Use toolbar for different result types
           
           </example>
+          <example 3 for SolidWorks These are just steps but you can add a little flesh to it>
+          1. Tools > Add-ins > Check SolidWorks Simulation
+          2. Simulation > Study > New Study
+          3. Select the appropriate study type (e.g., Static, Thermal, Frequency)
+          4. Right-click Part/Assembly in Simulation Tree > Apply Material to All Components
+          5. Simulation Tree > External Loads > Select Load Type (e.g., Force, Pressure) > Apply
+          6. Simulation Tree > Fixtures > Select Fixture Type (e.g., Fixed, Roller) > Apply
+          7. Simulation Tree > Mesh > Create Mesh > Adjust Mesh Settings
+          8. Simulation Tree > Run
+          9. Simulation Tree > Results > Stress, Displacement, or Strain Plots
+          10. Simulation Tree > Report > Generate Report
+          </example>
           - Conclude on stating this to the user to proceed with understanding the post-processing process from *MeanAs Dashboard*.
         `;
        
@@ -404,7 +420,7 @@ router.post('/', upload.array('images'), async (req, res) => {
               Use tools in the DesignModeler or SpaceClaim to clean up the geometry:
               - Remove unnecessary features.
               - Repair any gaps or overlapping surfaces with....
-              - Create a fluid domain if necessary by using "Create" > "Volume Extraction" for internal flows. or use encloser or fill for interior 
+              - Create a fluid domain if necessary by using "Create" > "Volume Extraction" for internal flows. or use encloser or fill for interior models fluid analysis.
               find how specific softwares create fluid domain for models.
           
               →Meshing

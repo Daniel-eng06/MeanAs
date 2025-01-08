@@ -120,17 +120,17 @@ router.post('/', upload.array('images'), async (req, res) => {
 
     // Prompt text based
     const promptText = 
-    `Objective: Your output should be in a way that both a non-engineering & engineering student, business man, company 
-    or any other firm could understand and follow till a clear successful analysis solution.  
+    `#Title: Error Analysis and Solution + for main words in the ${description}:
 
-    Instructions: *Bolden* the key factors and be clear, brainstorm and concise.
-    
-    #Title: Error Analysis and Solution + for main words in the ${description}:
-
-    Task: Spot out why and how to solve the error in the image provided and the model with the software ${analysisType} for my goal: ${description}.
+    Task:Please help me accurately and avoid hallucination spot out why and how to solve the error in the image provided and the model with the software ${analysisType} for my goal: ${description}.
       elaborate on  the solution within 3 solid bullet points with realistic solutions related to the model, error and implementable numerical values 
       that could be used at important stages during the analysis process to assist in obtaining quality and accurate results. I trust you will deliver the best solutions.
-    `;
+    
+     Instructions: *Bolden* the key factors and be clear, brainstorm and concise.
+
+     Objective: Your output should be in a way that both a non-engineering & engineering student, business man, company 
+     or any other firm could understand and follow till a clear successful analysis solution. 
+      `;
 
      // Call callGPTAPI to process images and the prompt
         const gptResponse = await callGPTAPI(validImageUrls, promptText);

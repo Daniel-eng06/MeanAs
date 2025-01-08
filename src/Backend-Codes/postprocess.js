@@ -163,7 +163,7 @@ router.post('/', upload.array('images'), async (req, res) => {
     let promptText;
     if (analysisType === 'FEA') {
       promptText = `
-      Task: In three solid reasoning, provide a grade 5 understanding and interpretation to the results in the image and *Bolden* the key factors.
+      Task: Please help me accurately and avoid hallucination in three solid reasoning, provide a grade 5 understanding and interpretation to the results in the image and *Bolden* the key factors.
       I trust you will deliver the best solutions.
       
      Title: #${detailLevel} Level Explanation:
