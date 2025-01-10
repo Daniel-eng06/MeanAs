@@ -1,6 +1,7 @@
-import React from 'react';
-import "./App.css";
+import React, { useState, useEffect, createContext } from "react";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import "./App.css";
 import Home from "./Main.jsx";
 import Dashboard from "./Components/DashBoard/Dashboard";
 import Preprocess from './Components/DashBoard/Pre-process.jsx';
@@ -16,31 +17,60 @@ import TeamConnect from './Components/DashBoard/TeamConnect.jsx';
 import HelpCenter from './Components/Home/HelpCenter.jsx';
 import PaymentFlow from './Components/Home/StripePayment.jsx';
 import Success from './Components/Home/Success.jsx'; 
+import ProtectedRoute from "./Protectroute.jsx";
+
+export const AuthContext = createContext();
 
 
 function MeanAsApp() {
-  return (<div className='App'>
-                <Router>
-                    <Routes>
-                      <Route index path="/" element={<Home/>}/>
-                      <Route index path="/dashboard" element={<Dashboard/>}/>
-                      <Route index path="/preprocess" element={<Preprocess/>}/>
-                      <Route index path="/errorchecker" element={<Errorchecker/>}/>
-                      <Route index path="/postprocess" element={<Postprocess/>}/>
-                      <Route index path="/authentication" element={<Authentication/>}/>
-                      <Route index path="/pricing" element={<Pricing/>}/>
-                      <Route index path="/about" element={<About/>}/>
-                      <Route index path="/features" element={<Features/>}/>
-                      <Route index path="/profile" element={<Profile/>}/>
-                      <Route index path="/projects" element={<Projects/>} />
-                      <Route index path="/teamconnect" element={<TeamConnect/>}/>
-                      <Route index path="/helpcenter" element={<HelpCenter/>}/>
-                      <Route index path="/paymentflow/:id" element={<PaymentFlow/>}/>
-                      <Route index path="/success" element={<Success />} />
-                    </Routes>
-                </Router>
-           </div>)
+  const [user, setUser] = useState(null);
+
+  // Listen for authentication state changes
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Logout
+  const handleLogout = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => setUser(null))
+      .catch((error) => console.error("Error during sign-out:", error.message));
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, handleLogout }}>
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/helpcenter" element={<HelpCenter />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/authentication" element={<Authentication />} />
+            <Route path="/paymentflow/:id" element={<ProtectedRoute><PaymentFlow /></ProtectedRoute>} caseSensitive={false} />
+            <Route path="/success" element={<ProtectedRoute><Success /></ProtectedRoute>} />
+            {user && (
+              <>
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/preprocess" element={<ProtectedRoute><Preprocess /></ProtectedRoute>} />
+                <Route path="/errorchecker" element={<ProtectedRoute><Errorchecker /></ProtectedRoute>} />
+                <Route path="/postprocess" element={<ProtectedRoute><Postprocess /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+                <Route path="/teamconnect" element={<ProtectedRoute><TeamConnect /></ProtectedRoute>} />
+              </>
+            )}
+          </Routes>
+        </Router>
+      </div>
+    </AuthContext.Provider>
+  );
 }
 
 export default MeanAsApp;
-

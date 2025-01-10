@@ -137,7 +137,7 @@ router.post('/', upload.array('images'), async (req, res) => {
               - Assess whether the materials meet the expected performance criteria based on the FEA results, and suggest any necessary material changes and future steps to take to succeed.
             
             3. ##FEA Results Comparison and Validation:
-              - Search into your trained data and knowledge you have concerning FEA results and judge if this model is good for manufacturing or to perform it's purpose.
+              - Search into your trained data and knowledge you have concerning FEA results and judge if this model has any drawbacks for manufacturing or to perform it's purpose.
               - Inform me on any discrepancies between the FEA results and these other data sources, providing potential reasons for any differences.
               - if the results isn't good then recommend what must be done right and any additional simulations or model adjustments that could improve the accuracy of the FEA results."
           `   
@@ -155,7 +155,7 @@ router.post('/', upload.array('images'), async (req, res) => {
         - Suggest any necessary changes to the boundary conditions or materials based on the CFD results.
       
       3. ##CFD Results Comparison and Validation:
-        - Search into your trained data and knowledge you have concerning CFD results and judge if this model is good for manufacturing or to perform it's purpose.
+        - Search into your trained data and knowledge you have concerning CFD results and judge if this model has any drawbacks for manufacturing or to perform it's purpose.
         - Inform me on any discrepancies and provide potential reasons for differences.
         - Recommend any additional simulations or model adjustments that could improve the accuracy of the CFD results.`      
 

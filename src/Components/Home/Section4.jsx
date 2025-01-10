@@ -45,7 +45,7 @@ function Billing() {
 
   // Loading state
   if (loading) {
-    return <p>Loading...</p>;
+    return <div id="offload">Loading...</div>;
   }
 
   // Render Billing plans

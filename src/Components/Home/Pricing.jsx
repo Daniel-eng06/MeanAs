@@ -44,7 +44,7 @@ function Pricing() {
   
     // Loading state
   if (loading) {
-    return <p>Loading...</p>;
+    return <div id="offload">Loading...</div>;
   }
 
   const img = {

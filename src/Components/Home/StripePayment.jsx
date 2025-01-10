@@ -72,7 +72,7 @@ const PaymentFlow = () => {
   }
 
   if (!plan) {
-    return <div>No plan found.</div>;
+    return <div id='loadpay'>No plan found.</div>;
   }
 
 
