@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../../firebase'; 
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import Grid from '../../Grid';
 import Footer from '../Home/Footer';
 import Navbar from "../Home/Navbar.jsx";
 import Section6 from "../Home/Section6";
 import './TeamConnect.css';
+import { onAuthStateChanged } from 'firebase/auth';
 
 function TeamConnect() {
     const vids = {
@@ -16,43 +17,38 @@ function TeamConnect() {
     const [emailMessage, setEmailMessage] = useState('');
     const [whatsappMessage, setWhatsappMessage] = useState('');
     const [selectedProject, setSelectedProject] = useState(null);
-    const [userId, setUserId] = useState(null);
+    const [user, setUser] = useState(null);
 
     // Track authentication state
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            if (user) {
-                setUserId(user.uid);
-            } else {
-                setUserId(null);
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser) {
+              setUser(currentUser);
             }
-        });
-
+          });
         return () => unsubscribe();
     }, []);
 
     // Fetch projects from Firestore
     useEffect(() => {
         const fetchProjects = async () => {
-            if (userId) {
-                try {
-                    const q = query(collection(db, "reports"), where("userId", "==", userId));
-                    const querySnapshot = await getDocs(q);
-                    const userProjects = querySnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data(),
-                        reportURL: `https://storage.googleapis.com/${process.env.REACT_APP_STORAGE_BUCKET}/reports/${doc.data().userId}/${doc.data().fileName}`
-                    }));
-                    setProjects(userProjects);
-                } catch (error) {
-                    console.error("Error fetching projects:", error);
-                    alert("An error occurred while fetching your projects. Please try again.");
-                }
-            }
-        };
-
+            if (!user) return;
+            try {
+              const projectSnapshot = await getDocs(collection(db, `projects/${user.uid}/subcollection`));
+              console.log(projectSnapshot)
+              const items = projectSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+              console.log(items)
+              setProjects(items)
+            } catch (error) {
+              console.error('Error fetching projects:', error);
+            } 
+          };
+      
         fetchProjects();
-    }, [userId]);
+    }, [user]);
 
     const shareViaEmail = (message, reportURL) => {
         window.location.href = `mailto:?subject=Project Report&body=${encodeURIComponent(message)}%0D%0A${encodeURIComponent(reportURL)}`;
@@ -62,6 +58,10 @@ function TeamConnect() {
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message + "\n" + reportURL)}`;
         window.open(whatsappUrl, "_blank");
     };
+
+    const handleProjectSelection = (e) => {
+        console.log(e.target);
+    }
 
     return (
         <div id='allteam'>
@@ -84,13 +84,14 @@ function TeamConnect() {
                     {projects.length === 0 ? (
                         <p>You currently have no projects. Please explore the features of MeanAs on your dashboard. Thank you!</p>
                     ) : (
-                        projects.map(project => (
-                            <div key={project.id} onClick={() => setSelectedProject(project)}>
-                                <h3>{project.title}</h3>
-                                <p>{project.description}</p>
-                                <a href={project.reportURL} target="_blank" rel="noopener noreferrer">View Report</a>
-                            </div>
-                        ))
+                        <select defaultValue={''} onChange={(e) => handleProjectSelection(e)}>
+                            <option value=''  disabled >Select a project</option>
+                            {projects.map(project => (
+                                <option key={project.id} value={project.id}>
+                                    {project.title}
+                                </option>
+                            ))}
+                        </select>
                     )}
                 </div>
                 <div className="sharing-container">

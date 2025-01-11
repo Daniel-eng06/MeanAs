@@ -5,6 +5,7 @@ const { firestore } = require('../../firebase.js');
 const axios = require('axios');
 const qs = require('qs');
 const { verifyToken } = require('./util.js')
+const moment = require('moment')
 
 dotenv.config();
 
@@ -38,6 +39,17 @@ router.post('/create-checkout-session', verifyToken, async (req, res) => {
   }
 
   const plan = planSnapshot.data();
+
+  const userSubscriptions = await firestore.collection("userSubscriptions")
+    .where("user.uid", "==", user.uid)
+    .where("active", "==", true)
+    .where("endDate", ">", moment())
+    .get();
+
+  if (!userSubscriptions.empty) {
+    return res.status(400).json({message: 'you already on this subscription'});;
+  }
+
   const transactionId = generateTransactionId(user.uid);
 
   const payload = qs.stringify({

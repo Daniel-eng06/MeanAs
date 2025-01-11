@@ -53,8 +53,8 @@ function MeanAsApp() {
             <Route path="/features" element={<Features />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/authentication" element={<Authentication />} />
-            <Route path="/paymentflow/:id" element={<ProtectedRoute><PaymentFlow /></ProtectedRoute>} caseSensitive={false} />
-            <Route path="/success" element={<ProtectedRoute><Success /></ProtectedRoute>} />
+            <Route path="/paymentflow/:id" element={<PaymentFlow />} caseSensitive={false} />
+            <Route path="/success" element={<Success />} />
             {user && (
               <>
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

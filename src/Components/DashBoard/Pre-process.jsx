@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jsPDF } from 'jspdf';
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from 'react-markdown';
 import { useHover, useFloating, offset, shift } from '@floating-ui/react';
@@ -44,6 +44,8 @@ function Preprocess() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const responseContainerRef = useRef(null);
+  const [projectId, setProjectId] = useState('');
+  const [title, setTitle] = useState('')
 
 
   // Authentication and user setup
@@ -106,7 +108,9 @@ function Preprocess() {
   const handleError = (error) => {
     let errorMessage;
     
-    if (error.response) {
+    if (error.status === 400) {
+      errorMessage = error?.response?.data?.message || 'Bad Request'
+    } else if (error.response) {
       errorMessage = error.response.data.error || 'Server error occurred';
       console.error('Server error:', error.response.data);
     } else if (error.request) {
@@ -144,6 +148,7 @@ function Preprocess() {
     try {
       // Input validation
       const validationErrors = [];
+      if (!title?.trim()) validationErrors.push('title is required');
       if (!description?.trim()) validationErrors.push('Description is required');
       if (!mass?.trim()) validationErrors.push('Mass is required');
       if (!materials?.length) validationErrors.push('At least one material must be selected');
@@ -188,6 +193,7 @@ function Preprocess() {
       formData.append('customOption', customOption);
       formData.append('analysisType', analysisType);
       formData.append('userId', user.uid);
+      formData.append('title', title.trim());
 
       // Get fresh ID token and make API request
       const idToken = await user.getIdToken(true);
@@ -213,6 +219,7 @@ function Preprocess() {
           throw new Error('API_ERROR:Invalid response from server');
         }
 
+        setProjectId(id);
         
         // Success handling
         resetForm();
@@ -270,44 +277,54 @@ function Preprocess() {
       }
   
       // Initialize jsPDF
-      const doc = new jsPDF();
+      const pdfDoc = new jsPDF();
       const margin = 10;
       let yPosition = margin;
       const maxWidth = 180;  
   
       // Add header
-      doc.setFontSize(18);
-      doc.setFont('helvetica', 'bold');
-      doc.text("Project Report", margin, yPosition);
+      pdfDoc.setFontSize(18);
+      pdfDoc.setFont('helvetica', 'bold');
+      pdfDoc.text("Project Report", margin, yPosition);
       yPosition += 15;
   
       // Add a section for analysis results
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
-      doc.text("Analysis Results:", margin, yPosition);
+      pdfDoc.setFont('helvetica', 'bold');
+      pdfDoc.setFontSize(14);
+      pdfDoc.text("Analysis Results:", margin, yPosition);
       yPosition += 10;
   
       // Format and add response content using splitTextToSize
-      doc.setFont('helvetica', 'normal');
+      pdfDoc.setFont('helvetica', 'normal');
       const formattedResponse = response.replace(/(\*\*|##)/g, ''); 
-      const responseLines = doc.splitTextToSize(formattedResponse, maxWidth);
+      const responseLines = pdfDoc.splitTextToSize(formattedResponse, maxWidth);
   
       for (const line of responseLines) {
-        if (yPosition > doc.internal.pageSize.height - margin) {
-          doc.addPage();
+        if (yPosition > pdfDoc.internal.pageSize.height - margin) {
+          pdfDoc.addPage();
           yPosition = margin;
         }
-        doc.text(line.trim(), margin, yPosition);
+        pdfDoc.text(line.trim(), margin, yPosition);
         yPosition += 10;  // Adjust spacing
       }
   
       // Save and upload PDF
       const timestamp = new Date().toISOString();
       const fileName = `report_${timestamp}.pdf`;
-      const pdfBlob = doc.output('blob');
+      const pdfBlob = pdfDoc.output('blob');
       const pdfRef = ref(storage, `reports/${user.uid}/${fileName}`);
       await uploadBytes(pdfRef, pdfBlob);
       const pdfURL = await getDownloadURL(pdfRef);
+
+      //update project in database with pdfUrl
+      const docReference = doc(db, `projects/${user.uid}/subcollection/${projectId}`);
+      const docSnapshot = await getDoc(docReference); 
+      if (docSnapshot.exists()) {
+        await updateDoc(docReference, {
+          reportUrl: pdfURL
+        })
+        
+      } 
   
       // Automatically download the PDF
       const link = document.createElement('a');
@@ -340,6 +357,17 @@ function Preprocess() {
       </div>
       <div className="preprocess">
         <form onSubmit={handleSubmit} className="image-form">
+          <div className="form-group">
+              <label htmlFor="title">Provide a Unique Project Title:</label>
+              <input
+                type='text'
+                id="mass"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder='Provide a unique title for your project'
+                required
+              />
+            </div>
           <div className="form-group">
             <label htmlFor="imageUpload">Upload 3D CAD Images of Your Model at Different Views:</label>
             <div className="custom-file-upload">

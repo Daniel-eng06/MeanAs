@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jsPDF } from 'jspdf';
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"; 
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from 'react-markdown';
 import { useHover, useFloating, offset, shift } from '@floating-ui/react';
@@ -43,6 +43,8 @@ function Errorchecker() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const responseContainerRef = useRef(null);
+  const [projectId, setProjectId] = useState('')
+  const [title, setTitle] = useState('')
 
 
 
@@ -97,8 +99,10 @@ function Errorchecker() {
    // Error handling function
    const handleError = (error) => {
     let errorMessage;
-    
-    if (error.response) {
+
+    if (error.status === 400) {
+      errorMessage = error?.response?.data?.message || 'Bad Request'
+    }else if (error.response) {
       errorMessage = error.response.data.error || 'Server error occurred';
       console.error('Server error:', error.response.data);
     } else if (error.request) {
@@ -138,6 +142,7 @@ function Errorchecker() {
     try {
       // Input validation
       const validationErrors = [];
+      if (!title?.trim()) validationErrors.push('title is required');
       if (!goal?.trim()) validationErrors.push('Description is required');
       if (!option) validationErrors.push('Analysis type is required');
       if (!images?.length) validationErrors.push('At least one image is required');
@@ -176,6 +181,7 @@ function Errorchecker() {
             formData.append('customOption', customOption);
             formData.append('analysisType', option);
             formData.append('userId', user.uid);
+            formData.append('title', title.trim());
 
           const idToken = await user.getIdToken(true);
           const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -200,7 +206,7 @@ function Errorchecker() {
               throw new Error('API_ERROR:Invalid response from server');
             }
 
-            
+            setProjectId(id);
             
             // Success handling
             resetForm();
@@ -231,80 +237,91 @@ function Errorchecker() {
 
 
           // PDF generation handler 
-            const generatePDF = async () => {
-              if (!user) {
-                alert('Please log in to generate a report');
-                return;
-              }
-            
-              if (!response) {
-                alert('No data available to generate a report');
-                return;
-              }
-            
-              const maxFileSize = 5 * 1024 * 1024;
-            
-              try {
-                // Validate and append images
-                for (const image of images) {
-                  if (image.size > maxFileSize) {
-                    alert(`${image.name} exceeds the 5MB limit.`);
-                    return;
-                  }
-                }
-            
-                // Initialize jsPDF
-                const doc = new jsPDF();
-                const margin = 10;
-                let yPosition = margin;
-                const maxWidth = 180;  
-            
-                // Add header
-                doc.setFontSize(18);
-                doc.setFont('helvetica', 'bold');
-                doc.text("Project Report", margin, yPosition);
-                yPosition += 15;
-            
-                // Add a section for analysis results
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(14);
-                doc.text("Analysis Results:", margin, yPosition);
-                yPosition += 10;
-            
-                // Format and add response content using splitTextToSize
-                doc.setFont('helvetica', 'normal');
-                const formattedResponse = response.replace(/(\*\*|##)/g, ''); 
-                const responseLines = doc.splitTextToSize(formattedResponse, maxWidth);
-            
-                for (const line of responseLines) {
-                  if (yPosition > doc.internal.pageSize.height - margin) {
-                    doc.addPage();
-                    yPosition = margin;
-                  }
-                  doc.text(line.trim(), margin, yPosition);
-                  yPosition += 10;  // Adjust spacing
-                }
-            
-                // Save and upload PDF
-                const timestamp = new Date().toISOString();
-                const fileName = `report_${timestamp}.pdf`;
-                const pdfBlob = doc.output('blob');
-                const pdfRef = ref(storage, `reports/${user.uid}/${fileName}`);
-                await uploadBytes(pdfRef, pdfBlob);
-                const pdfURL = await getDownloadURL(pdfRef);
-            
-                // Automatically download the PDF
-                const link = document.createElement('a');
-                link.href = pdfURL;
-                link.download = fileName;
-                link.click();
-            
-                return pdfURL;
-              } catch (error) {
-                console.error('Error generating or uploading PDF:', error);
-                alert(`Failed to generate report: ${error.message}`);
-              }
-      };
+const generatePDF = async () => {
+    if (!user) {
+      alert('Please log in to generate a report');
+      return;
+    }
+  
+    if (!response) {
+      alert('No data available to generate a report');
+      return;
+    }
+  
+    const maxFileSize = 5 * 1024 * 1024;
+  
+    try {
+      // Validate and append images
+      for (const image of images) {
+        if (image.size > maxFileSize) {
+          alert(`${image.name} exceeds the 5MB limit.`);
+          return;
+        }
+      }
+  
+      // Initialize jsPDF
+      const pdfDoc = new jsPDF();
+      const margin = 10;
+      let yPosition = margin;
+      const maxWidth = 180;  
+  
+      // Add header
+      pdfDoc.setFontSize(18);
+      pdfDoc.setFont('helvetica', 'bold');
+      pdfDoc.text("Project Report", margin, yPosition);
+      yPosition += 15;
+  
+      // Add a section for analysis results
+      pdfDoc.setFont('helvetica', 'bold');
+      pdfDoc.setFontSize(14);
+      pdfDoc.text("Analysis Results:", margin, yPosition);
+      yPosition += 10;
+  
+      // Format and add response content using splitTextToSize
+      pdfDoc.setFont('helvetica', 'normal');
+      const formattedResponse = response.replace(/(\*\*|##)/g, ''); 
+      const responseLines = pdfDoc.splitTextToSize(formattedResponse, maxWidth);
+  
+      for (const line of responseLines) {
+        if (yPosition > pdfDoc.internal.pageSize.height - margin) {
+          pdfDoc.addPage();
+          yPosition = margin;
+        }
+        pdfDoc.text(line.trim(), margin, yPosition);
+        yPosition += 10;  // Adjust spacing
+      }
+  
+      // Save and upload PDF
+      const timestamp = new Date().toISOString();
+      const fileName = `report_${timestamp}.pdf`;
+      const pdfBlob = pdfDoc.output('blob');
+      const pdfRef = ref(storage, `reports/${user.uid}/${fileName}`);
+      await uploadBytes(pdfRef, pdfBlob);
+      const pdfURL = await getDownloadURL(pdfRef);
+
+      //update project in database with pdfUrl
+      const docReference = doc(db, `projects/${user.uid}/subcollection/${projectId}`);
+      const docSnapshot = await getDoc(docReference); 
+      if (docSnapshot.exists()) {
+        await updateDoc(docReference, {
+          reportUrl: pdfURL
+        })
+        
+      } 
+  
+      // Automatically download the PDF
+      const link = document.createElement('a');
+      link.href = pdfURL;
+      link.download = fileName;
+      link.click();
+  
+      return pdfURL;
+    } catch (error) {
+      console.error('Error generating or uploading PDF:', error);
+      alert(`Failed to generate report: ${error.message}`);
+    }
+  };
+  
       
 
   return (
@@ -325,6 +342,17 @@ function Errorchecker() {
       </div>
       <div className="errorcheck">
         <form onSubmit={handleSubmit} className="image-form">
+        <div className="form-group">
+              <label htmlFor="title">Provide a Unique Project Title:</label>
+              <input
+                type='text'
+                id="mass"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder='Provide a unique title for your project'
+                required
+              />
+            </div>
           <div className="form-group">
             <label htmlFor="imageUpload">Upload Images of Your Analysis Errors and Model:</label>
             <div className="custom-file-upload">

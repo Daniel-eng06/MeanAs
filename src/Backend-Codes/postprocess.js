@@ -31,8 +31,6 @@ async function callGPTAPI(imageUrls, promptText) {
     }
   }))
 
-  console.log(images);
-
     const messages = [
       {
         role: 'user',
@@ -67,12 +65,16 @@ async function callGPTAPI(imageUrls, promptText) {
 // Endpoint to handle data processing
 router.post('/', upload.array('images'), async (req, res) => {
   try {
-    const { description, analysisType, detailLevel, userId} = req.body;
+    const { description, analysisType, detailLevel, title} = req.body;
     const files = req.files;
+    const userId = req.user.uid;
 
     // Validate required fields
     if (!description) {
       return res.status(400).json({ error: 'Invalid Description' });
+    }
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required' });
     }
     
     if (!analysisType) {
@@ -87,6 +89,26 @@ router.post('/', upload.array('images'), async (req, res) => {
       return res.status(400).json({ error: 'No images uploaded' });
     }
 
+    const userSubscriptions = await firestore.collection("userSubscriptions")
+      .where("user.uid", "==", userId)
+      .where("active", "==", true)
+      .get();
+
+    if (userSubscriptions.empty) {
+      return res.status(400).json({ message: "Sorry you don't have any subscriptions at the moment. Please explore our subscriptions to continue" });
+    }
+
+    const userSubscriptionDoc = userSubscriptions.docs[0];
+
+    const userSubscriptionUsage = await firestore.collection("userSubscriptionUsage")
+      .where("userId", "==", userId)
+      .where("userSubscription.id", "==", userSubscriptionDoc.id)
+      .get();
+
+    if (!userSubscriptionUsage.empty && userSubscriptionUsage.docs[0].data().limit === 0) {
+      return res.status(400).json({ message: "Sorry you have exhausted your current subscription. Please navigate to the pricing page to upgrade." });
+    }
+
 
     // Save data to Firestore
     const data = {
@@ -96,6 +118,7 @@ router.post('/', upload.array('images'), async (req, res) => {
       timestamp: new Date(),
       projectType: 'POST_PROCESS',
       userId,
+      title,
     };
    
 
@@ -247,6 +270,7 @@ router.post('/', upload.array('images'), async (req, res) => {
           responseGeneratedAt: new Date(),
         });
       
+        await firestore.collection(`tmpSubscriptionUsage`).add({userId});
     
         res.status(200).json({
           id: projectRef.id, 

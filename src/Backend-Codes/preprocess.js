@@ -65,13 +65,19 @@ async function callGPTAPI(imageUrls, promptText) {
 // Endpoint to handle data processing
 router.post('/', upload.array('images'), async (req, res) => {
   try {
-    const { description, mass, materials, option, customOption, analysisType, userId} = req.body;
+    const { description, mass, materials, option, customOption, analysisType, title} = req.body;
     const files = req.files;
+    const user = req.user;
+    const userId = user.uid;
 
 
     // Validate input data
     if (!description) {
       return res.status(400).json({ error: 'Invalid Description' });
+    }
+
+    if (!title) {
+      return res.status(400).json({ error: 'Title is required' });
     }
 
     if (!mass) {
@@ -82,6 +88,25 @@ router.post('/', upload.array('images'), async (req, res) => {
       return res.status(400).json({ error: 'No images uploaded' });
     }
 
+    const userSubscriptions = await firestore.collection("userSubscriptions")
+      .where("user.uid", "==", userId)
+      .where("active", "==", true)
+      .get();
+
+    if (userSubscriptions.empty) {
+      return res.status(400).json({ message: "Sorry you don't have any subscriptions at the moment. Please explore our subscriptions to continue" });
+    }
+
+    const userSubscriptionDoc = userSubscriptions.docs[0];
+
+    const userSubscriptionUsage = await firestore.collection("userSubscriptionUsage")
+      .where("userId", "==", userId)
+      .where("userSubscription.id", "==", userSubscriptionDoc.id)
+      .get();
+
+    if (!userSubscriptionUsage.empty && userSubscriptionUsage.docs[0].data().limit === 0) {
+      return res.status(400).json({ message: "Sorry you have exhausted your current subscription. Please navigate to the pricing page to upgrade." });
+    }
   
     // Save data to Firestore
     const data = {
@@ -93,7 +118,8 @@ router.post('/', upload.array('images'), async (req, res) => {
       analysisType,
       timestamp: new Date(),
       userId,
-      projectType: 'PRE_PROCESS'
+      projectType: 'PRE_PROCESS',
+      title,
     };
     
     const projectRef = await firestore.collection(`projects/${data.userId}/subcollection`).add(data);
@@ -377,7 +403,6 @@ router.post('/', upload.array('images'), async (req, res) => {
         3. ##Mesh Quality and Refinement:
           - Check and identify critical regions in the model where flow gradients are expected to be high (e.g., near walls, around obstacles, or at interfaces) and state it.
           - Recommend mesh refinement strategies for these regions of the model in the image provided, including boundary layer meshing and local grid refinement. 
-          This example is just a sample reason and come up with the accurate one in relation to the model you see.
           <example>
             - "Refine the mesh near the leading edge of the airfoil with a minimum element size of 0.05 mm to capture the boundary layer effects accurately."
           </example>
@@ -535,6 +560,8 @@ router.post('/', upload.array('images'), async (req, res) => {
       generatedResponse,
       responseGeneratedAt: new Date()
     })
+
+    await firestore.collection(`tmpSubscriptionUsage`).add({userId: user.uid});
 
     res.status(200).json({
       id: projectRef.id, 

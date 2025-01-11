@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './Projects.css';
 import { db, auth } from '../../firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import Footer from '../Home/Footer';
 import Navbar from '../Home/Navbar';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Projects() {
   const navigate = useNavigate();
-  const [reports, setReports] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -20,7 +21,7 @@ function Projects() {
         setUser(currentUser);
       } else {
         setUser(null);
-        navigate('/authentication'); // Redirect to Authentication if not logged in
+        navigate('/authentication');
       }
     });
 
@@ -34,18 +35,15 @@ function Projects() {
     const fetchReports = async () => {
       setLoading(true);
       try {
-        const reportsRef = collection(db, 'reports');
-        const q = query(reportsRef, where('userId', '==', user.uid));
-        const querySnapshot = await getDocs(q);
-
-        const userReports = querySnapshot.docs.map((doc) => ({
+        const projectSnapshot = await getDocs(collection(db, `projects/${user.uid}/subcollection`));
+        console.log(projectSnapshot)
+        const items = projectSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-
-        setReports(userReports);
+        setProjects(items)
       } catch (error) {
-        console.error('Error fetching reports:', error);
+        console.error('Error fetching projects:', error);
       } finally {
         setLoading(false);
       }
@@ -58,7 +56,7 @@ function Projects() {
     return <div id="load">Loading...</div>;
   }
 
-  if (reports.length === 0) {
+  if (projects.length === 0) {
     const vid ={
       vid1:"Gradient 2.mp4"
   }
@@ -84,6 +82,20 @@ function Projects() {
       vid1:"Gradient 2.mp4"
     }
 
+    const handleDelete = async (id) => {
+      //display prompt to confirm delete first before proceeding
+      
+
+      //delete project from firebase
+      try {
+        const docRef = doc(db, `projects/${user.uid}/subcollection/${id}`);
+        await deleteDoc(docRef);
+        setProjects(projects.filter(x => x.id !== id));
+      } catch (error) {
+        console.error("Error deleting document:", error);
+      }
+    };
+
   return (
     <>
     <video id="background-video"
@@ -91,19 +103,26 @@ function Projects() {
     </video>
       <Navbar />
       <div className="project-details">
-        <h1>Your Reports</h1>
-        <ul className="reports-list">
-          {reports.map((report) => (
-            <li key={report.id} className="report-item">
-              <h2>{report.title}</h2>
-              <p>Description: {report.description}</p>
-              <a href={`https://storage.googleapis.com/${process.env.REACT_APP_STORAGE_BUCKET}/reports/${report.userId}/${report.fileName}`} target="_blank" rel="noopener noreferrer">
-                Download Report
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h1>Your Reports</h1>
+      <ul className="reports-list">
+        {projects.map((item) => (
+          <li key={item.id} className="report-item">
+            <h2>{item.title}</h2>
+            <p>Description: {item.description}</p>
+            <Link to={item.reportUrl} target="_blank">
+              Download Report
+            </Link>
+            <button
+              className="delete-btn"
+              onClick={() => handleDelete(item.id)}
+              aria-label="Delete Report"
+            >
+              <DeleteIcon />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
       <Footer />
     </>
   );

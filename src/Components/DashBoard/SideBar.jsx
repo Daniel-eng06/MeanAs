@@ -98,7 +98,7 @@ function SideBar() {
         <ul className="dashy">
           <Link className="dashli" to="/dashboard"><div className="dash"><img id="das" src={dashimg.over} alt="Overview" /></div>Overview</Link>
           <Link className="dashli" to="/projects"><div className="dash"><img id="das" src={dashimg.proj} alt="Projects" /></div>Projects</Link>
-          <Link className="dashli" to="/teamConnect"><div className="dash"><img id="das" src={dashimg.team} alt="Team Connect" /></div>Team Connect</Link>
+          <Link className="dashli" to="/teamconnect"><div className="dash"><img id="das" src={dashimg.team} alt="Team Connect" /></div>Team Connect</Link>
         </ul>
         <Link id="upgra" to='/pricing'>
           <div>

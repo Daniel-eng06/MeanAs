@@ -66,91 +66,116 @@ async function callGPTAPI(imageUrls, promptText) {
 // Endpoint to handle error-checking data
 router.post('/', upload.array('images'), async (req, res) => {
   try {
-    const { description, analysisType, userId} = req.body;
+    const { description, analysisType, title} = req.body;
     const files = req.files;
+    const userId = req.user.uid;
   
-      // Validate input data
-      if (!description ) {
-        return res.status(400).json({ error: 'Invalid Description' });
-      }
-      
-      if (!analysisType) {
-        return res.status(400).json({ error: 'Invalid Analysis Type' });
-      }
-
-      if (!files) {
-        return res.status(400).json({ error: 'No images uploaded' });
-      }
-
-    
-
-    // Save data to Firestore
-    const data =  {
-      description,
-      analysisType,
-      timestamp: new Date(),
-      userId,
-      projectType: 'ERROR_CHECKER',
-    };
-
-    const projectRef = await firestore.collection(`projects/${data.userId}/subcollection`).add(data);
-    // In your backend
-    if (!projectRef || !projectRef.id) {
-      throw new Error('Project reference not created properly');
-    }
-    const validImageUrls = [];
-
-    for (const file of files) {
-      try {
-        const fileName =  `uploads/${data.userId}/${Date.now()}_${file.originalname}`;
-        const upload = storage.file(fileName);
-
-        await upload.save(file.buffer, {
-          metadata: {
-            contentType: file.mimetype,
-          },
-        });
-        await upload.makePublic();
-
-         validImageUrls.push(`https://storage.googleapis.com/${storage.name}/${upload.name}`);
-      } catch (uploadError) {
-        console.error('Error uploading image:', uploadError);
-      }
+    // Validate input data
+    if (!description ) {
+      return res.status(400).json({ error: 'Invalid Description' });
     }
 
-    // Prompt text based
-    const promptText = 
-    `#Title: Error Analysis and Solution + for main words in the ${description}:
+    if (!title ) {
+      return res.status(400).json({ error: 'Title is required' });
+    }
+    
+    if (!analysisType) {
+      return res.status(400).json({ error: 'Invalid Analysis Type' });
+    }
 
-    Task:Please help me accurately and avoid hallucination spot out why and how to solve the error in the image provided and the model with the software ${analysisType} for my goal: ${description}.
-      elaborate on  the solution within 3 solid bullet points with realistic solutions related to the model, error and implementable numerical values 
-      that could be used at important stages during the analysis process to assist in obtaining quality and accurate results. I trust you will deliver the best solutions.
-    
-     Instructions: *Bolden* the key factors and be clear, brainstorm and concise.
+    if (!files) {
+      return res.status(400).json({ error: 'No images uploaded' });
+    }
 
-     Objective: Your output should be in a way that both a non-engineering & engineering student, business man, company 
-     or any other firm could understand and follow till a clear successful analysis solution. 
-      `;
+    const userSubscriptions = await firestore.collection("userSubscriptions")
+      .where("user.uid", "==", userId)
+      .where("active", "==", true)
+      .get();
 
-     // Call callGPTAPI to process images and the prompt
-        const gptResponse = await callGPTAPI(validImageUrls, promptText);
-        const generatedResponse = gptResponse['choices'][0]['message']
+    if (userSubscriptions.empty) {
+      return res.status(400).json({ message: "Sorry you don't have any subscriptions at the moment. Please explore our subscriptions to continue" });
+    }
+
+    const userSubscriptionDoc = userSubscriptions.docs[0];
+
+    const userSubscriptionUsage = await firestore.collection("userSubscriptionUsage")
+      .where("userId", "==", userId)
+      .where("userSubscription.id", "==", userSubscriptionDoc.id)
+      .get();
+
+    if (!userSubscriptionUsage.empty && userSubscriptionUsage.docs[0].data().limit === 0) {
+      return res.status(400).json({ message: "Sorry you have exhausted your current subscription. Please navigate to the pricing page to upgrade." });
+    }
+
+
+  // Save data to Firestore
+  const data =  {
+    description,
+    analysisType,
+    timestamp: new Date(),
+    userId,
+    projectType: 'ERROR_CHECKER',
+    title
+  };
+
+  const projectRef = await firestore.collection(`projects/${data.userId}/subcollection`).add(data);
+  // In your backend
+  if (!projectRef || !projectRef.id) {
+    throw new Error('Project reference not created properly');
+  }
+  const validImageUrls = [];
+
+  for (const file of files) {
+    try {
+      const fileName =  `uploads/${data.userId}/${Date.now()}_${file.originalname}`;
+      const upload = storage.file(fileName);
+
+      await upload.save(file.buffer, {
+        metadata: {
+          contentType: file.mimetype,
+        },
+      });
+      await upload.makePublic();
+
+        validImageUrls.push(`https://storage.googleapis.com/${storage.name}/${upload.name}`);
+    } catch (uploadError) {
+      console.error('Error uploading image:', uploadError);
+    }
+  }
+
+  // Prompt text based
+  const promptText = 
+  `
+   #Task:Please help me accurately and avoid hallucination. Spot out why and how to solve the error in the image provided and the model with the software ${analysisType} for my goal: ${description}.
+    elaborate on  the solution within 3 solid bullet points with realistic solutions related to the model, error and implementable numerical values 
+    that could be used at important stages during the analysis process to assist in obtaining quality and accurate results. I trust you will deliver the best solutions.
     
-        // Save the generated response to Firestore
-        await projectRef.update({
-          generatedResponse,
-          responseGeneratedAt: new Date(),
-        });
-      
+    Your output should be in a way that both a non-engineering & engineering student, business man, company 
+    or any other firm could understand and follow till a clear successful analysis solution. 
     
-        res.status(200).json({
-          id: projectRef.id, 
-          generatedResponse: generatedResponse 
-        });
-      } catch (error) {
-        console.error('Error processing data:', error);
-        res.status(500).json({ error: error.message || 'Failed to process data' });
-      }
-    });
+    Instructions: *Bolden* the key factors and be clear, brainstorm and concise.
+    `;
+
+    // Call callGPTAPI to process images and the prompt
+      const gptResponse = await callGPTAPI(validImageUrls, promptText);
+      const generatedResponse = gptResponse['choices'][0]['message']
+  
+      // Save the generated response to Firestore
+      await projectRef.update({
+        generatedResponse,
+        responseGeneratedAt: new Date(),
+      });
+
+      await firestore.collection(`tmpSubscriptionUsage`).add({userId});
     
-    module.exports = router;
+      res.status(200).json({
+        id: projectRef.id, 
+        generatedResponse: generatedResponse 
+      });
+    } catch (error) {
+      console.error('Error processing data:', error);
+      res.status(500).json({ error: error.message || 'Failed to process data' });
+    }
+  });
+    
+module.exports = router;
