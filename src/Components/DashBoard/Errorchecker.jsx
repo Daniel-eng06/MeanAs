@@ -343,13 +343,13 @@ const generatePDF = async () => {
       <div className="errorcheck">
         <form onSubmit={handleSubmit} className="image-form">
         <div className="form-group">
-              <label htmlFor="title">Provide a Unique Project Title:</label>
+              <label htmlFor="title" id='topspace'>Provide a Unique Project Title:</label>
               <input
                 type='text'
-                id="mass"
+                id="titles"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder='Provide a unique title for your project'
+                placeholder='Provide a unique title for your project.'
                 required
               />
             </div>

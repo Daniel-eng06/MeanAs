@@ -51,7 +51,6 @@ async function callGPTAPI(imageUrls, promptText) {
       presence_penalty: 0,
       top_p: 1,
       max_tokens: 3000,
-      //this metrics affect the performance of the results.
     }, {
       headers: {
         'Content-Type': 'application/json',

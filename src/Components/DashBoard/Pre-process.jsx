@@ -358,13 +358,13 @@ function Preprocess() {
       <div className="preprocess">
         <form onSubmit={handleSubmit} className="image-form">
           <div className="form-group">
-              <label htmlFor="title">Provide a Unique Project Title:</label>
+              <label htmlFor="title" id='topspace'>Provide a Unique Project Title:</label>
               <input
                 type='text'
-                id="mass"
+                id="titles"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder='Provide a unique title for your project'
+                placeholder='Provide a unique title for your project.'
                 required
               />
             </div>
@@ -396,13 +396,13 @@ function Preprocess() {
             ))}
           </div>
           <div className="form-group">
-            <label htmlFor="description">Provide The Default Mass of Your Model:</label>
-            <textarea
+            <label htmlFor="description">Provide The Default Mass (g/kg) of Your Model:</label>
+            <input
               type='text'
               id="mass"
               value={mass}
               onChange={(e) => setMass(e.target.value)}
-              placeholder='Check for words like "Measure Inertia" or "Mass Properties" on your CAD models for the default mass(g/kg).'
+              placeholder={`Check "Measure Inertia" or "Mass Properties" in your CAD software.`}
               required
             />
           </div>

@@ -218,15 +218,27 @@
   line-height: 1.3;
 }
 
-#mass{
-  height:3.2em;
+#mass ,#titles{
+  height:2.8em;
   width:32.7em;
   border: 0.15em solid royalblue;
   border-radius: 0.3125em;
   color: black;
   font-size: 0.875em;
   line-height: 1.3;
-  padding-top: 2px;
+  padding-top: 10px;
+  margin-top: 0;
+}
+
+#titles{
+  margin-top: 0px;
+  height: 2.8em;
+  padding-top: 10px;
+
+}
+
+#topspace{
+  margin-top: 15px;
 }
 
 

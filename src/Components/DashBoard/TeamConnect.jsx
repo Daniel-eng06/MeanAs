@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db } from '../../firebase'; 
+import { auth, db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import Grid from '../../Grid';
 import Footer from '../Home/Footer';
@@ -23,9 +23,9 @@ function TeamConnect() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
-              setUser(currentUser);
+                setUser(currentUser);
             }
-          });
+        });
         return () => unsubscribe();
     }, []);
 
@@ -34,44 +34,50 @@ function TeamConnect() {
         const fetchProjects = async () => {
             if (!user) return;
             try {
-              const projectSnapshot = await getDocs(collection(db, `projects/${user.uid}/subcollection`));
-              console.log(projectSnapshot)
-              const items = projectSnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-              console.log(items)
-              setProjects(items)
+                const projectSnapshot = await getDocs(collection(db, `projects/${user.uid}/subcollection`));
+                const items = projectSnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setProjects(items);
             } catch (error) {
-              console.error('Error fetching projects:', error);
-            } 
-          };
-      
+                console.error('Error fetching projects:', error);
+            }
+        };
+
         fetchProjects();
     }, [user]);
 
+    // Update the selected project when the dropdown changes
+    const handleProjectSelection = (e) => {
+        const selectedId = e.target.value;
+        const project = projects.find(p => p.id === selectedId);
+        if (project) {
+            setSelectedProject(project);
+        }
+        console.log('Selected Project:', project);
+    };
+
+    // Function to share via email
     const shareViaEmail = (message, reportURL) => {
         window.location.href = `mailto:?subject=Project Report&body=${encodeURIComponent(message)}%0D%0A${encodeURIComponent(reportURL)}`;
     };
 
+    // Function to share via WhatsApp
     const shareViaWhatsApp = (message, reportURL) => {
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message + "\n" + reportURL)}`;
         window.open(whatsappUrl, "_blank");
     };
 
-    const handleProjectSelection = (e) => {
-        console.log(e.target);
-    }
-
     return (
         <div id='allteam'>
             <Grid />
-            <video id="background-video" src={vids.vid1s}      
-              alt = "background video"
-              loop 
-              autoPlay 
-              muted 
-              playsInline
+            <video id="background-video" src={vids.vid1s}
+                alt="background video"
+                loop
+                autoPlay
+                muted
+                playsInline
             ></video>
             <Navbar />
             <div className='teamhub'>
@@ -85,7 +91,7 @@ function TeamConnect() {
                         <p>You currently have no projects. Please explore the features of MeanAs on your dashboard. Thank you!</p>
                     ) : (
                         <select defaultValue={''} onChange={(e) => handleProjectSelection(e)}>
-                            <option value=''  disabled >Select a project</option>
+                            <option value='' disabled>Select a project</option>
                             {projects.map(project => (
                                 <option key={project.id} value={project.id}>
                                     {project.title}
@@ -105,11 +111,15 @@ function TeamConnect() {
                             required
                         />
                         <button className='share-button' onClick={() => {
-                            if (selectedProject) {
-                                shareViaEmail(emailMessage, selectedProject.reportURL);
-                            } else {
+                            if (!selectedProject) {
                                 alert('Please select a project first.');
+                                return;
                             }
+                            if (!selectedProject.reportURL) {
+                                alert('This project does not have a report URL.');
+                                return;
+                            }
+                            shareViaEmail(emailMessage, selectedProject.reportURL);
                         }}>
                             Send
                         </button>
@@ -124,11 +134,15 @@ function TeamConnect() {
                             required
                         />
                         <button className='share-button' onClick={() => {
-                            if (selectedProject) {
-                                shareViaWhatsApp(whatsappMessage, selectedProject.reportURL);
-                            } else {
+                            if (!selectedProject) {
                                 alert('Please select a project first.');
+                                return;
                             }
+                            if (!selectedProject.reportURL) {
+                                alert('This project does not have a report URL.');
+                                return;
+                            }
+                            shareViaWhatsApp(whatsappMessage, selectedProject.reportURL);
                         }}>
                             Send
                         </button>
@@ -136,7 +150,7 @@ function TeamConnect() {
                 </div>
                 <div>
                     <p>Thank you for choosing MeanAs for clarity, confidence, and accurate interpretations of your projects.
-                         We appreciate your support and invite you to share your experiences with us below.</p>
+                        We appreciate your support and invite you to share your experiences with us below.</p>
                 </div>
             </div>
             <Section6 />

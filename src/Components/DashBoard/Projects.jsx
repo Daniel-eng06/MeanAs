@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import Footer from '../Home/Footer';
 import Navbar from '../Home/Navbar';
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Projects() {
   const navigate = useNavigate();
@@ -36,12 +36,11 @@ function Projects() {
       setLoading(true);
       try {
         const projectSnapshot = await getDocs(collection(db, `projects/${user.uid}/subcollection`));
-        console.log(projectSnapshot)
         const items = projectSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        setProjects(items)
+        setProjects(items);
       } catch (error) {
         console.error('Error fetching projects:', error);
       } finally {
@@ -53,78 +52,82 @@ function Projects() {
   }, [user]);
 
   if (loading) {
-    return <div id="load">Loading...</div>;
+    return <div id="loadi">Loading...</div>;
   }
 
   if (projects.length === 0) {
-    const vid ={
-      vid1:"Gradient 2.mp4"
+    const vid = {
+      vid1: 'Gradient 2.mp4',
+    };
+    return (
+      <div id="loader">
+        <video
+          id="background-video"
+          src={vid.vid1}
+          alt="background video"
+          loop
+          autoPlay
+          muted
+          playsInline
+        ></video>
+        <Navbar />
+        <div id="loadi">
+          <h1>No projects found from your account.</h1>
+          <br />
+          <span>Navigate back to your Dashboard and explore MeanAs.</span>
+        </div>
+        <Footer />
+      </div>
+    );
   }
-    return <div id="loader">
-              <video id="background-video"
-                  src={vid.vid1}       
-                  alt = "background video"
-                  loop 
-                  autoPlay 
-                  muted 
-                  playsInline
-              >
-              </video>
-             <Navbar/>
-             <div id="loadi">
-                <h1>No projects found from your account.</h1><br />
-                <span>Navigate back to your Dashboard and explore MeanAs.</span>
-              </div>
-            <Footer />
-          </div>
-  }
-    const vid ={
-      vid1:"Gradient 2.mp4"
-    }
 
-    const handleDelete = async (id) => {
-      //display prompt to confirm delete first before proceeding
-      
+  const vid = {
+    vid1: 'Gradient 2.mp4',
+  };
 
-      //delete project from firebase
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this project? This action cannot be undone.'
+    );
+
+    if (confirmDelete) {
       try {
         const docRef = doc(db, `projects/${user.uid}/subcollection/${id}`);
         await deleteDoc(docRef);
-        setProjects(projects.filter(x => x.id !== id));
+        setProjects(projects.filter((x) => x.id !== id));
       } catch (error) {
-        console.error("Error deleting document:", error);
+        console.error('Error deleting document:', error);
       }
-    };
+    }
+  };
 
   return (
-    <>
-    <video id="background-video"
-          src={vid.vid1} controls loop autoPlay muted>
-    </video>
+    <div className="proj">
+      <video id="background-video" src={vid.vid1} controls loop autoPlay muted></video>
       <Navbar />
       <div className="project-details">
-      <h1>Your Reports</h1>
-      <ul className="reports-list">
-        {projects.map((item) => (
-          <li key={item.id} className="report-item">
-            <h2>{item.title}</h2>
-            <p>Description: {item.description}</p>
-            <Link to={item.reportUrl} target="_blank">
-              Download Report
-            </Link>
-            <button
-              className="delete-btn"
-              onClick={() => handleDelete(item.id)}
-              aria-label="Delete Report"
-            >
-              <DeleteIcon />
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+        <h1>Your Reports</h1>
+        <ul className="reports-list">
+          {projects.map((item) => (
+            <li key={item.id} className="report-item">
+              <h2>{item.title}</h2>
+              <p>Description: {item.description}</p>
+              <Link to={item.reportUrl} target="_blank" rel="noopener noreferrer" className='repbut'>
+                Download Report
+              </Link>
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(item.id)}
+                aria-label="Delete Report"
+              >
+                <DeleteIcon />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

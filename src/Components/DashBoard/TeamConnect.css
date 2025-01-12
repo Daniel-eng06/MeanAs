@@ -44,6 +44,7 @@
     border-bottom: 1px solid gray;
     padding: 2%;
     margin-bottom: 5%;
+    width: 94%;
 }
 
 .borderteam p {
@@ -131,6 +132,35 @@
 .share-button:hover{
     background-color: #ff8800;
 }
+
+
+select {
+    width: 100%;
+    padding: 10px; 
+    border: 2px solid #cccccc; 
+    border-radius: 10px; 
+    height: 10%;
+    font-size: 14px; 
+    font-family: 'Arial', sans-serif; 
+    background-color: #f9f9f9; 
+    color: #333;  
+    outline: none; 
+    cursor: pointer; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+  }
+  
+
+  select:hover {
+    border-color: #007BFF;
+}
+  
+  select:focus {
+    border-color: #0056b3; 
+    box-shadow: 0 0 5px rgb(0, 123, 255, 0.5); 
+  }
+
+
+  
 
 
 /* Combined Media Query for various screen sizes */
