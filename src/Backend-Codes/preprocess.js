@@ -47,7 +47,7 @@ async function callGPTAPI(imageUrls, promptText) {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: "gpt-4o-2024-05-13",  
       messages: messages,
-      temperature: 0.25,
+      temperature: 0.3,
       frequency_penalty: 0,
       presence_penalty: 0,
       top_p: 1,
@@ -172,6 +172,7 @@ router.post('/', upload.array('images'), async (req, res) => {
            <example>:
             - *Stainless Steel*
               - Density: 7.85 g/cm³
+              - Poission ratio: 0.3
               - Tensile Strength: 515-720 MPa
               - Young's Modulus: 193 GPa
               - Thermal Conductivity: 16.2 W/mK
@@ -182,11 +183,11 @@ router.post('/', upload.array('images'), async (req, res) => {
         4. ##Mesh Quality and Critical Locations:
           - Help me to identify critical locations on the model in the provided image that require high-quality meshing and how to mesh it and mentor me on why meshing that area is important to me 
           achieving accurate analysis result.
-          - Help me provide mesh quality criteria for the critical areas you will suggest and what element sizing or other meshing technics and values you will follow to mesh the model accurately. 
+          - Help me provide mesh quality criteria for the critical areas you will suggest and what element sizing or other meshing technics and values I can follow to mesh those regions of the model accurately. 
           <examples>:
             - "At the top corner of the model where there is a hole, increase the mesh quality by using an *element size of 0.1* at the edges."
           </examples>
-          Also check if the model in the image is an assemblied model and provide instructions on how contact must be applied on the models before meshing if not proceed with meshing.
+          Also check if the model in the image is an assemblied model and provide instructions on how contact must be applied on the models before meshing if not proceed.
 
         5. ##Boundary Conditions and Numerical Parameters:
           - Help me get close to realistic boundary condition parameters considering the original mass of the model as ${mass} use this to predict the boundary condition for the real model with one of the materials check for a values that can be applied based on the mass.

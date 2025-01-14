@@ -12,71 +12,14 @@
   flex-direction: column;
 }
 
-.project-page {
-  max-width: 800px;
-  margin: 10px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.project-page h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-}
-
-.project-page p {
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 10px;
-}
-
-.project-page .image-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.project-page .image-gallery img {
-  width: 100%;
-  max-width: 200px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.project-page .reports-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-}
-
-.project-page .reports-list .report-item {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.project-page .reports-list .report-item h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.project-page .reports-list .report-item p {
-  font-size: 14px;
-  margin-bottom: 10px;
-  color: #555;
-}
 
 .repbut{
   text-decoration:none;
   color: #110151;
   font-weight: bold;
   transition: color 0.3s ease;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .repbut:hover {
@@ -84,17 +27,11 @@
   text-decoration: none;
 }
 
-.repbut{
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
 
 .delete-btn{
   position: absolute;
   right: 15px;
+  bottom: 5px;
 }
 
 #loadi {
@@ -102,7 +39,7 @@
   justify-content: center;
   align-items: center;
   font-size: 35px;
-  margin-top: 15%;
+  margin-top: 9%;
   margin-bottom: 10%;
   color: #000925;
   flex-direction: column;
@@ -127,10 +64,11 @@
   row-gap: 10px;
   column-gap: 25px;
   list-style: none; 
-  padding: 0;
+  padding: 0 25px;
 }
 
 .report-item {
+  position: relative;
   margin: 10px 0; 
   padding: 15px;
   border: 1px solid #ddd; 
@@ -139,16 +77,20 @@
   background: rgba(255, 255, 255, 0.7); 
   backdrop-filter: blur(10px); 
   -webkit-backdrop-filter: blur(10px);
+  height: 115%;
 }
 
 .report-item h2 {
   margin-bottom: 5px;
   color: #333; 
+
 }
 
 .report-item p {
   margin: 5px 0;
   color: #666; 
+  width: 90%;
+  height: 55%;
 }
 
 

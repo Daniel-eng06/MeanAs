@@ -144,8 +144,8 @@ router.post('/', upload.array('images'), async (req, res) => {
 
   // Prompt text based
   const promptText = 
-  `
-   #Task:Please help me accurately and avoid hallucination. Spot out why and how to solve the error in the image provided and the model with the software ${analysisType} for my goal: ${description}.
+  `Please help me accurately and avoid hallucination. 
+    Task:Spot out why and how to solve the error in the image provided and the model with the software ${analysisType} for my goal: ${description}.
     elaborate on  the solution within 3 solid bullet points with realistic solutions related to the model, error and implementable numerical values 
     that could be used at important stages during the analysis process to assist in obtaining quality and accurate results. I trust you will deliver the best solutions.
     

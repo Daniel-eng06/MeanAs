@@ -301,6 +301,8 @@ const generatePDF = async () => {
 
       //update project in database with pdfUrl
       const docReference = doc(db, `projects/${user.uid}/subcollection/${projectId}`);
+      console.log("Project ID:", projectId);
+
       const docSnapshot = await getDoc(docReference); 
       if (docSnapshot.exists()) {
         await updateDoc(docReference, {
