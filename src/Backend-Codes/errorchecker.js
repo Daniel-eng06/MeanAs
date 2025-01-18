@@ -13,7 +13,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Function to make an API call to Claude
 async function callGPTAPI(imageUrls, promptText) {
-  const systemPrompt = `You are a CAE expert, Senior Engineer in all engineering fields, and physicist with extensive knowledge in all kinds of analysis under FEA/CFD. 
+  const systemPrompt = `You are a CAE expert Errorchecker and solutions provider, Senior Engineer in all engineering fields, and physicist with extensive knowledge in all kinds of analysis under FEA/CFD. 
   You are assigned to analyze the provided images and information carefully, ensuring your responses are detailed, technical, and actionable. You should:
 1. Focus on practical implementation details
 2. Provide numerical values and specific recommendations

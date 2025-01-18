@@ -5,7 +5,7 @@ export const benefit=[
         img:"expert.png",
         h2:"Expert Interpretation Anytime",
         description:"Gain access to expert pre-processing and interpretation before and after your FEA/CFD analysis, " +
-            "ensuring accurate understanding of your projects and results."
+            "ensuring accurate understanding of your projects and results anytime."
     },
     {
         id: 1,

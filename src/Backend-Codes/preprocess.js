@@ -156,7 +156,7 @@ router.post('/', upload.array('images'), async (req, res) => {
         business man, company or any other firm could understand and follow till a clear successful analysis solution.
         I trust you will deliver the best solutions. 
 
-        #Start with a Catchy Heading based on the request. 
+        ##Start with a Catchy Heading based on the request. 
         
         1. ##Model Analysis and Geometry Cleanup: 
           Before doing the task below I want you to be precise on the location of the model in the image that required a clean up. example at the left side of the model 
@@ -165,6 +165,7 @@ router.post('/', upload.array('images'), async (req, res) => {
           - Check for errors, inconsistencies, and topological issues in the image model provided and state it clearly and concise.
 
         2. ##Analysis Type Recommendation:
+          - Based on the model in the image and the description what are the physical behaviors that will occur and why?
           - Recommend the specific analysis type to use to perform that aligns with the goal in my description that is define the physical behaviours that relates to the model in the image.
 
         3. ##Material Selection:
