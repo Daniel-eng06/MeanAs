@@ -56,7 +56,7 @@
   }
 
   .footer p {
-      font-size: 0.9em; /* Smaller font size */
+      font-size: 16px; /* Smaller font size */
   }
 
   .footer-nav {
@@ -67,6 +67,6 @@
   }
 
   .footer-nav a {
-      font-size: 14px; /* Smaller font size */
+      font-size: 16px; /* Smaller font size */
   }
 }

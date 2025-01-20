@@ -230,40 +230,41 @@
 
   @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
     .section4 {
-        margin-bottom: 50px; /* Adjust as needed */
+        margin-bottom: 50px; 
     }
 
     .section4 h1 {
-        font-size: 30px; 
+        font-size: 35px; 
         margin-bottom: 0px; 
         text-align: center;
         margin-top: 10px;
     }
 
     .bill {
-        grid-template-columns:1fr; 
+        grid-template-columns:380px; 
         row-gap: 50px; 
         justify-content: center;
-
+        width: 180px;
     }
 
     .bill #free, 
     .bill #pro, 
     .bill #unique {
-        width: 90%; /* Full width for smaller screens */
-        margin: 0 auto; /* Center alignment */
-        padding: 20px; /* Reduced padding */
+        width: 90%; 
+        margin: 0 auto; 
+        padding: 20px; 
     }
 
     #price {
-        font-size: 30px; /* Smaller price font */
-        margin-top: 15px; /* Adjusted spacing */
+        font-size: 40px;
+        margin-top: 15px; 
         text-align: left;
     }
 
     .pack {
-        width: 100%; /* Full width for smaller screens */
-        margin-bottom: -30px; /* Adjust spacing */
+        width: 100%; 
+        margin-bottom: -30px; 
+        font-size: 16px;
     }
 
     #pri div{
@@ -278,8 +279,8 @@
     }
 
     .go1, .go {
-        padding: 8px 20px; /* Smaller button padding */
-        font-size: 15px; /* Smaller font size */
+        padding: 8px 20px; 
+        font-size: 16px; 
     }
 
     #unique #popu{

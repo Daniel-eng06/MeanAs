@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const axios = require('axios');
 const multer = require('multer');
 const { firestore, storage } = require('../../firebase.js');
+const moment = require('moment');
 
 dotenv.config();
 
@@ -92,6 +93,7 @@ router.post('/', upload.array('images'), async (req, res) => {
     const userSubscriptions = await firestore.collection("userSubscriptions")
       .where("user.uid", "==", userId)
       .where("active", "==", true)
+      .where("endDate", ">", moment())
       .get();
 
     if (userSubscriptions.empty) {

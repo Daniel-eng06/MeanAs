@@ -105,7 +105,16 @@
     width: 90%;
     height: auto;
     padding: 15px;
-    margin-top: 100px;
+    margin-top:20%;
+    margin-bottom: 20%;
+  }
+
+  .welcome-message h2 {
+      font-size: 30px;
+  }
+
+  .welcome-message p{
+    font-size: 16px;
   }
 
   .meanaslogo {
@@ -116,10 +125,7 @@
   #sign,
   .google-signin {
     width: 70%;
-    font-size: 16px;
+    font-size: 17px;
   }
 
-  #or {
-    font-size: 16px;
-  }
 }

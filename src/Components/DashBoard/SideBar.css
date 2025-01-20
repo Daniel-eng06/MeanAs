@@ -339,18 +339,20 @@
      align-items: center;
      justify-content: center;
      flex-direction: column;
-     margin-left: 55%;
+     margin-left: 48%;
       width: 93%;
       height: auto;
       margin-top: 30%;
       padding: 20px;
       z-index:-1;
       margin-bottom: 30%;
-
     }
 
+    .topbar h1{
+        font-size: 30px;
+    }
     .topbar p{
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .topbar h1 ,p{
@@ -363,7 +365,7 @@
       row-gap: 20px;
       top: auto;
       left: auto;
-      margin-top: 90%;
+      margin-top: 80%;
       margin-bottom: 20%;
       z-index:0;
     }
@@ -377,7 +379,7 @@
     #box #opt p{
         padding:0px;
         margin:0px;
-        font-size: 20px;
+        font-size: 24px;
     }
 
     .dropdown-menus {

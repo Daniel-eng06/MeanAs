@@ -5,6 +5,7 @@ import './StripePayment.css';
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const PaymentFlow = () => {
   const [plan, setPlan] = useState(null);
@@ -62,6 +63,7 @@ const PaymentFlow = () => {
 
     } catch (err) {
       console.log(err.response?.data || "Error occurred during checkout.");
+      alert(err?.response?.data?.message || "Unexpected error occurred. Please try again later")
     } finally {
       setLoading(false);
     }
@@ -82,9 +84,16 @@ const PaymentFlow = () => {
         <h2>Subscribe to {plan.name}</h2>
         <p><strong>Price:</strong> ${plan.price} per {plan.duration}</p>
         <p>Thank you for choosing MeanAs as your personal FEA/CFD analysis assistant tool.</p>
-        <button onClick={handleSubscribe} disabled={loading}>
-          {loading ? 'Processing...' : 'Proceed to Payment'}
-        </button>
+         <div className='choice'>
+            <button onClick={handleSubscribe} disabled={loading}>
+              {loading ? 'Processing...' : 'Proceed to Payment'}
+            </button>
+            <button >
+              <Link to = "/" className= "homepage"> 
+                Back Home 
+              </Link>
+            </button>
+        </div>
       </div>
     </div>
   );

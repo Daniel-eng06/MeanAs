@@ -191,29 +191,38 @@
 
 
 @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
+
+.phonescreen{
+    width: 100%;
+    position: relative;
+}
+
+.section3 {
+    width: 100%;
+}
+
     .section3 h1 {
-        font-size: 30px;
+        font-size: 35px;
         text-align: center;
     }
 
     .section3 .tutorial {
-        width: 270px;
+        width: 100%;
         height: 200px;
         margin-bottom: -10px;
         margin-top: -10px;
     }
 
     .section3 .tutorial video {
-        max-width: 16.7em;
-        height: 350px;
+        max-width: 100%;
+        max-height: 350px;
         object-fit: cover;
-        /* margin-left: -8%; */
     }
 
     
     .steps, .steps1 {
         flex-direction: column;
-        width: 270px;
+        width: 100%;
         height: auto;
         border: 1px solid silver;
         margin-bottom: 20px;
@@ -221,19 +230,19 @@
 
     .steps div, .steps1 div,
     .steps #process, .steps1 #process {
-        width: 270px;
+        width: 100%;
         height: auto;
         padding: 20px;
         margin: 10px 0;
     }
 
     #process h2 {
-        font-size: 24px;
+        font-size: 26px;
     }
 
     #process span,
     #process ul {
-        font-size: 1em;
+        font-size: 16px;
     }
 
     .testimony {
@@ -247,7 +256,7 @@
     }
 
     #testa, #testam {
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .testimony div {

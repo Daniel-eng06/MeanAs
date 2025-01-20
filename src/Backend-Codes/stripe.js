@@ -44,10 +44,11 @@ router.post('/create-checkout-session', verifyToken, async (req, res) => {
     .where("user.uid", "==", user.uid)
     .where("active", "==", true)
     .where("endDate", ">", moment())
+    .where("plan.id", "==", planSnapshot.id)
     .get();
 
   if (!userSubscriptions.empty) {
-    return res.status(400).json({message: 'you already on this subscription'});;
+    return res.status(400).json({message: 'You are already on this subscription. Please head to the homepage.'});;
   }
 
   const transactionId = generateTransactionId(user.uid);

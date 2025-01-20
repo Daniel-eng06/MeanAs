@@ -8,7 +8,7 @@ function Workprocess() {
         tut1:"postprocess.mp4"
     }
     return(
-        <div>
+        <div className="phonescreen">
             <div className="section3">
                 <h1>How Does It Work?</h1>
                 <div className="steps">

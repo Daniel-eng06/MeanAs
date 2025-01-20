@@ -152,11 +152,6 @@ function Postprocess() {
                 throw new Error('USER_ERROR:User profile not found');
               }
         
-              const userData = userDocSnap.data();
-              if (!userData.isSubscribed) {
-                throw new Error('SUBSCRIPTION_ERROR:Please upgrade to continue');
-              }
-        
               // Form data preparation with validation
               const formData = new FormData();
               const maxFileSize = 5 * 1024 * 1024; 

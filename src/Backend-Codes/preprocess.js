@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const axios = require('axios');
 const multer = require('multer');
 const { firestore, storage } = require('../../firebase.js');
+const moment = require('moment');
 
 dotenv.config();
 
@@ -47,7 +48,7 @@ async function callGPTAPI(imageUrls, promptText) {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
       model: "gpt-4o-2024-05-13",  
       messages: messages,
-      temperature: 0.3,
+      temperature: 0.26,
       frequency_penalty: 0,
       presence_penalty: 0,
       top_p: 1,
@@ -91,6 +92,7 @@ router.post('/', upload.array('images'), async (req, res) => {
     const userSubscriptions = await firestore.collection("userSubscriptions")
       .where("user.uid", "==", userId)
       .where("active", "==", true)
+      .where("endDate", ">", moment())
       .get();
 
     if (userSubscriptions.empty) {

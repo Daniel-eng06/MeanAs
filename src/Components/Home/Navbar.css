@@ -120,20 +120,20 @@
         flex-direction: row;
         width: auto;
         height: 80px;
-        padding: 0px 100px;
-        column-gap: 60px;
+        padding: 0px 150px;
+        column-gap: 160px;
     }
 
     .logo {
         margin-top: 12px;
         margin-left: -30px;
-        width: 150px;
+        width: 180px;
         height: 100px;
     }
 
     .menu,
     .try {
-        display: none;
+       display: none;
     }
 
     .dropdown{
@@ -157,19 +157,21 @@
     }
 
     .dropdown-list {
-        margin-top: 18%;
+        margin-top: 50%;
         padding-top: 40px;
         height: 350px;
         position: static;
         background: #f0f0f0;
         box-shadow: none;
-        width: 1200px;
-        margin-left: -200px;
+        width: 500px;
+        margin-left: -270px;
     }
 
     .dropdown-list li{
         margin-top: 40px;
         text-decoration: none;
+        margin-left: -50px;
+        font-size: 17px;
     }
 
     .dropdown-list li #l1 , #try{

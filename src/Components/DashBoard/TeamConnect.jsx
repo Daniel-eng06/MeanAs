@@ -59,13 +59,13 @@ function TeamConnect() {
     };
 
     // Function to share via email
-    const shareViaEmail = (message, reportURL) => {
-        window.location.href = `mailto:?subject=Project Report&body=${encodeURIComponent(message)}%0D%0A${encodeURIComponent(reportURL)}`;
+    const shareViaEmail = (message, reportUrl) => {
+        window.location.href = `mailto:?subject=Project Report&body=${encodeURIComponent(message)}%0D%0A${encodeURIComponent(reportUrl)}`;
     };
 
     // Function to share via WhatsApp
-    const shareViaWhatsApp = (message, reportURL) => {
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message + "\n" + reportURL)}`;
+    const shareViaWhatsApp = (message, reportUrl) => {
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message + "\n" + reportUrl)}`;
         window.open(whatsappUrl, "_blank");
     };
 
@@ -115,11 +115,11 @@ function TeamConnect() {
                                 alert('Please select a project first.');
                                 return;
                             }
-                            if (!selectedProject.reportURL) {
+                            if (!selectedProject.reportUrl) {
                                 alert('This project does not have a report URL.');
                                 return;
                             }
-                            shareViaEmail(emailMessage, selectedProject.reportURL);
+                            shareViaEmail(emailMessage, selectedProject.reportUrl);
                         }}>
                             Send
                         </button>
@@ -138,11 +138,11 @@ function TeamConnect() {
                                 alert('Please select a project first.');
                                 return;
                             }
-                            if (!selectedProject.reportURL) {
+                            if (!selectedProject.reportUrl) {
                                 alert('This project does not have a report URL.');
                                 return;
                             }
-                            shareViaWhatsApp(whatsappMessage, selectedProject.reportURL);
+                            shareViaWhatsApp(whatsappMessage, selectedProject.reportUrl);
                         }}>
                             Send
                         </button>

@@ -225,7 +225,7 @@
 @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
     .errorcheck {
         position: relative;
-        margin-left: -63%;
+        margin-left: -54%;
         top: 2.5em;
         width: calc(100% - 1em);
         padding: 1em;
@@ -238,7 +238,7 @@
         width: calc(100% - 1em);
         height: 25em;
         position:absolute;
-        top:60em;
+        top:65em;
     }
     #err .response{
         height: 20em;
@@ -260,7 +260,7 @@
     }
 
     .errorcheck #title {
-        font-size: 14px;
+        font-size: 16px;
         margin-bottom: 5px;
         margin-top: 5px;
     }
@@ -268,13 +268,13 @@
     .errorcheck #description {
         width: 100%;
         height: 120px;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .errorcheck #newbut {
         margin-left: 0%;
         width: 70%;
-        font-size: 1em;
+        font-size: 16px;
     }
 
     .uploaded-images {
@@ -298,11 +298,15 @@
 
     .image-preview #buts {
         padding: 3px;
-        font-size: 10px;
+        font-size: 17px;
     }
 
 
     #err .report{
         margin-top: -30%;
     }
+
+    #bulbz{
+        margin-left: 40px;
+      }
 }

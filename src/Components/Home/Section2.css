@@ -103,7 +103,7 @@
 @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
     .section2 h1 {
         width: 90%;
-        font-size: 30px;
+        font-size: 35px;
         text-align: center;
     }
 
@@ -125,12 +125,12 @@
     }
 
     #bene h2 {
-        font-size: 18px;
+        font-size: 20px;
         width: 95%;
     }
 
     #bene p {
-        font-size: 14px;
+        font-size: 16px;
         line-height: 1.3;
     }
 
@@ -141,8 +141,8 @@
 
     .callbar li #call1,
     .callbar li #call3 {
-        font-size: 15px;
-        padding: 8px 16px;
+        font-size: 17px;
+        padding: 10px 16px;
         color: #000925;
         font-weight: 500;
     }
