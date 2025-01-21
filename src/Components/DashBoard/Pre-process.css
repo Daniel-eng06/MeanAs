@@ -350,6 +350,86 @@
   margin-right: 10px;
 }
 
+.response {
+  font-size: 16px; 
+  line-height: 1.5; 
+  color: #000925; 
+  padding: 10px 30px; 
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.response h1, .response h2, .response h3, .response h4 {
+  color: #ff8800; 
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.response p {
+  margin-bottom: 5px; 
+  color: #000925; 
+}
+
+.response ul, .response ol {
+  padding-left: 20px;
+  margin-bottom: 5px;
+}
+
+.response li {
+  margin-bottom: 5px;
+  color: #000925; 
+}
+
+.response a {
+  color: #ff8800; 
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.response a:hover {
+  color: #000925; 
+}
+
+.response code {
+  color: #000925; 
+  padding: 2px 4px; 
+  border-radius: 4px; 
+}
+
+.response pre {
+  background-color: #000925; 
+  color: #ff8800;
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto; 
+}
+
+.response table {
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-bottom: 20px;
+}
+
+.response th, .response td {
+  border: 1px solid #000925; 
+  padding: 10px;
+  text-align: left;
+}
+
+.response th {
+  color: #000925; 
+  font-weight: bold;
+}
+
+.response blockquote {
+  border-left: 4px solid #ff8800; 
+  padding-left: 10px;
+  margin: 20px 0;
+  color: #000925;
+  font-style: italic;
+}
+
+
 
 
 @media all and (max-width: 375px), all and (max-width: 414px), all and (max-width: 430px) {
