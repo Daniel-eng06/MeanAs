@@ -23,12 +23,11 @@ function Salescopy() {
     return(
         <div className='section1'>
             <div className="heading">
-                <h1>Access Fast Clarity & Accuracy
-                    Before and After Your FEA/CFD Analysis in <span id='tw'>Two Steps</span>
+                <h1>Learn How To Analyse Your Specific CAD Model in <span id='tw'>60 Seconds</span> not Months
                 </h1>
                 <p>
-                Unlock expert-level insights with our AI-powered platform for FEA/CFD analysis. No CAE expertise needed.
-                 From smarter material selection to precise result interpretation, elevate your projects with confidence and clarity.
+                Everything you need to unlock the necessary confidence and accuracy to get started with FEA/CFD analysis tailored to
+                your specific CAD model from material selection to the meaning behind every analysis results and decisions made - even as a complete begineer or an expert.
                 </p>
             </div>
             <ul className="call">
