@@ -364,7 +364,7 @@ function Preprocess() {
               />
             </div>
           <div className="form-group">
-            <label htmlFor="imageUpload">Upload 3D CAD Images of Your Model at Different Views:</label>
+            <label htmlFor="imageUpload">Upload 3D CAD Images of Your Model in Multi-View:</label>
             <div className="custom-file-upload">
               <label htmlFor="imageUpload" id='hov'>
                 <FaUpload size={30} />
