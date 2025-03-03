@@ -22,8 +22,11 @@ function Salescopy() {
     }
     return(
         <div className='section1'>
+            <div className='coanalyst'>
+                <h2>AI Co-Analyst</h2>
+            </div>
             <div className="heading">
-                <h1>Learn How To Analyse Your Specific CAD Model in <span id='tw'>60 Seconds</span> not Months
+                <h1>Analyse Your Specific CAD Model in <span id='tw'>60 Seconds</span> not Weeks
                 </h1>
                 <p>
                 Everything you need to unlock the necessary confidence and accuracy to get started with FEA/CFD analysis tailored to
